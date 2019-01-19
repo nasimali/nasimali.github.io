@@ -1,4 +1,4 @@
 
 function openCv(){
-  console.log("Hello World");
+  window.open("resources/profile.pdf");
 }
