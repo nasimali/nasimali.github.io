@@ -31,27 +31,36 @@ footer {
   left: 50%;
 }
 
+h2{
+  font-family: 'Inconsolata';
+}
+
 #footercontent {
-  color: white;
+  color: #4CA973;
 }
 
 .content-headers{
   text-align: center;
-  color: white;
+  color: #4CA973;
 }
 
 nav{
   background-color: rgba(0, 0, 0, 0.5)!important;
 }
 
-.navbar-brand{
+/* .navbar-brand{
   color: white;
-}
+} */
 
 .navbar-toggler-icon{
   background-image: url('iconfinder-icon.svg');
 }
 
 .nav-link{
-  color: white;
+  color: #4CA973;
+  font-family: 'Inconsolata';
+}
+
+#logo-image{
+  height: 2.5em;
 }
