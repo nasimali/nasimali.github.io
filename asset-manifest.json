@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.da005ed0.chunk.css",
+    "main.js": "/static/js/main.272a92cd.chunk.js",
+    "main.js.map": "/static/js/main.272a92cd.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.fb2b45e8.js",
+    "runtime~main.js.map": "/static/js/runtime~main.fb2b45e8.js.map",
+    "static/js/2.832434bf.chunk.js": "/static/js/2.832434bf.chunk.js",
+    "static/js/2.832434bf.chunk.js.map": "/static/js/2.832434bf.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.48aaaa619ac793cfa79639bca7be53f6.js": "/precache-manifest.48aaaa619ac793cfa79639bca7be53f6.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.da005ed0.chunk.css.map": "/static/css/main.da005ed0.chunk.css.map",
+    "static/media/clem-onojegaw.jpg": "/static/media/clem-onojegaw.c058841b.jpg",
+    "static/media/clem-onojeghuo.jpg": "/static/media/clem-onojeghuo.216ef03c.jpg",
+    "static/media/cynthia-del-rio.jpg": "/static/media/cynthia-del-rio.9813593c.jpg",
+    "static/media/mariya-georgieva.jpg": "/static/media/mariya-georgieva.4575c40b.jpg",
+    "static/media/nasim.jpg": "/static/media/nasim.5f2e946a.jpg",
+    "static/media/olu-eletu.jpg": "/static/media/olu-eletu.4112cbc1.jpg",
+    "static/media/profile-bg.jpg": "/static/media/profile-bg.baf6b40a.jpg",
+    "static/media/studio-1.jpg": "/static/media/studio-1.ae0150c0.jpg",
+    "static/media/studio-2.jpg": "/static/media/studio-2.76e2987e.jpg",
+    "static/media/studio-3.jpg": "/static/media/studio-3.1d5451ce.jpg",
+    "static/media/studio-4.jpg": "/static/media/studio-4.e064d090.jpg",
+    "static/media/studio-5.jpg": "/static/media/studio-5.ef5c30ea.jpg"
+  }
+}
