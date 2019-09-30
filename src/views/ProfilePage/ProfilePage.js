@@ -68,20 +68,20 @@ export default function ProfilePage(props) {
                     <Button
                       justIcon
                       link
-                      href="https://twitter.com/Nasimmali"
-                      target="_blank"
-                      className={classes.margin5}
-                    >
-                      <i className={"fab fa-twitter"} />
-                    </Button>
-                    <Button
-                      justIcon
-                      link
                       href="https://github.com/nasimali"
                       target="_blank"
                       className={classes.margin5}
                     >
                       <i className={"fab fa-github"} />
+                    </Button>
+                    <Button
+                      justIcon
+                      link
+                      href="https://www.linkedin.com/in/nasim-ali/"
+                      target="_blank"
+                      className={classes.margin5}
+                    >
+                      <i className={"fab fa-linkedin"} />
                     </Button>
                     <Button
                       justIcon
@@ -95,11 +95,11 @@ export default function ProfilePage(props) {
                     <Button
                       justIcon
                       link
-                      href="https://www.linkedin.com/in/nasim-ali/"
+                      href="https://twitter.com/Nasimmali"
                       target="_blank"
                       className={classes.margin5}
                     >
-                      <i className={"fab fa-linkedin"} />
+                      <i className={"fab fa-twitter"} />
                     </Button>
                   </div>
                 </div>
