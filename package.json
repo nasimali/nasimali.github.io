@@ -2,7 +2,6 @@
   "name": "material-kit-react",
   "homepage": "http://nasim.dev",
   "version": "1.8.0",
-  "description": "Material Kit React. Coded by Creative Tim",
   "private": true,
   "main": "dist/index.js",
   "dependencies": {
