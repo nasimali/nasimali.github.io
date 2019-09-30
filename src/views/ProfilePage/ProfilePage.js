@@ -16,17 +16,26 @@ import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import NavPills from "components/NavPills/NavPills.js";
 import Parallax from "components/Parallax/Parallax.js";
+
 import profile from "assets/img/faces/nasim.jpg";
-import studio1 from "assets/img/education/earlsmead-logo.png";
-import studio2 from "assets/img/education/gladesmore-logo.jpeg";
-import studio3 from "assets/img/education/kcl-logo.png";
-import work1 from "assets/img/examples/olu-eletu.jpg";
-import work2 from "assets/img/examples/clem-onojeghuo.jpg";
-import work3 from "assets/img/examples/cynthia-del-rio.jpg";
-import work4 from "assets/img/examples/mariya-georgieva.jpg";
-import work5 from "assets/img/examples/clem-onojegaw.jpg";
+
+import edu1 from "assets/img/education/earlsmead-logo.png";
+import edu2 from "assets/img/education/gladesmore-logo.jpeg";
+import edu3 from "assets/img/education/kcl-logo.png";
+
+import work1 from "assets/img/experiences/java.png";
+import work2 from "assets/img/experiences/mysql.jpg";
+import work3 from "assets/img/experiences/react.png";
+import work4 from "assets/img/experiences/redux.svg";
+import work5 from "assets/img/experiences/springlogo.png";
+
+import int1 from "assets/img/interests/cloud.jpg";
+import int2 from "assets/img/interests/crypto.png";
+import int3 from "assets/img/interests/js.jpg";
+import int4 from "assets/img/interests/www.png";
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
+import { Tooltip } from "@material-ui/core";
 
 const useStyles = makeStyles(styles);
 
@@ -125,23 +134,29 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio2}
-                              className={navImageClasses}
-                            />
+                            <Tooltip title="Earlsmead Primary School">
+                              <img
+                                alt="Earlsmead Primary School"
+                                src={edu1}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
+                            <Tooltip title="Gladesmore Community School">
+                              <img
+                                alt="Gladesmore Community School"
+                                src={edu2}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={8}>
-                            <img
-                              alt="..."
-                              src={studio3}
-                              className={navImageClasses}
-                            />
+                            <Tooltip title="King's College London">
+                              <img
+                                alt="King's College London"
+                                src={edu3}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
                           </GridItem>
                         </GridContainer>
                       )
@@ -152,33 +167,43 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work3}
-                              className={navImageClasses}
-                            />
+                            <Tooltip title="Java">
+                              <img
+                                alt="Java"
+                                src={work1}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
+                            <Tooltip title="MySql">
+                              <img
+                                alt="MySQL"
+                                src={work2}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work5}
-                              className={navImageClasses}
-                            />
+                            <Tooltip title="React JS">
+                              <img
+                                alt="React JS"
+                                src={work3}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
+                            <Tooltip title="Redux">
+                              <img
+                                alt="Redux"
+                                src={work4}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
+                            <Tooltip title="Spring Boot">
+                              <img
+                                alt="Spring Boot"
+                                src={work5}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
                           </GridItem>
                         </GridContainer>
                       )
@@ -189,33 +214,36 @@ export default function ProfilePage(props) {
                       tabContent: (
                         <GridContainer justify="center">
                           <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work4}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio3}
-                              className={navImageClasses}
-                            />
+                            <Tooltip title="Cloud Computing">
+                              <img
+                                alt="Cloud Computing"
+                                src={int1}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
+                            <Tooltip title="JavaScript Frameworks">
+                              <img
+                                alt="JavaScript Frameworks"
+                                src={int3}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
                           </GridItem>
                           <GridItem xs={12} sm={12} md={4}>
-                            <img
-                              alt="..."
-                              src={work2}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={work1}
-                              className={navImageClasses}
-                            />
-                            <img
-                              alt="..."
-                              src={studio1}
-                              className={navImageClasses}
-                            />
+                            <Tooltip title="Crypocurrencies">
+                              <img
+                                alt="Cryptocurrency"
+                                src={int2}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
+                            <Tooltip title="World Wide Web">
+                              <img
+                                alt="World Wide Web"
+                                src={int4}
+                                className={navImageClasses}
+                              />
+                            </Tooltip>
                           </GridItem>
                         </GridContainer>
                       )

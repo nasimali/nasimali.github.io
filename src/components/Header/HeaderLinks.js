@@ -15,6 +15,7 @@ import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-kit-react/components/headerLinksStyle.js";
 
 import pdf from "assets/downloads/Profile.pdf";
+import cvPdf from "assets/downloads/CV.pdf";
 
 const useStyles = makeStyles(styles);
 
@@ -47,7 +48,7 @@ export default function HeaderLinks(props) {
       </ListItem>
       <ListItem className={classes.listItem}>
         <Button
-          href="/cv"
+          href={cvPdf}
           color="transparent"
           target="_blank"
           className={classes.navLink}
