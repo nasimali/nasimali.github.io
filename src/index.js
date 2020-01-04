@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createBrowserHistory } from "history";
-import { Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 
 import "assets/scss/material-kit-react.scss?v=1.8.0";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,15 +10,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MahiraPage from "views/MNPage/MahiraPage";
 
-var hist = createBrowserHistory();
-
 ReactDOM.render(
-  <Router history={hist}>
+  <HashRouter>
     <Switch>
       <Route path="/profile-page" component={ProfilePage} />
       <Route path="/mahira" component={MahiraPage} />
       <Route path="/" component={ProfilePage} />
     </Switch>
-  </Router>,
+  </HashRouter>,
   document.getElementById("root")
 );
