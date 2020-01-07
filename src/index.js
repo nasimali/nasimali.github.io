@@ -9,12 +9,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import MahiraPage from "views/MNPage/MahiraPage";
+import MnPage from "./views/MNPage/MnPage";
 
 ReactDOM.render(
   <HashRouter>
     <Switch>
-      <Route path="/profile-page" component={ProfilePage} />
+      <Route path="/profilepage" component={ProfilePage} />
       <Route path="/mahira" component={MahiraPage} />
+      <Route path="/maliha" component={MnPage} />
       <Route path="/" component={ProfilePage} />
     </Switch>
   </HashRouter>,
