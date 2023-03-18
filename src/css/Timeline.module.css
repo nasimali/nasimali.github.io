@@ -1,0 +1,47 @@
+/* src/css/Timeline.module.css */
+.timelineSection {
+  padding: 2rem 1rem;
+}
+
+.title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.timelineList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+}
+
+.timelineItem {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 1rem;
+  text-align: center;
+  width: calc(50% - 2rem);
+  box-sizing: border-box;
+}
+
+.timelineImage {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .timelineItem {
+    width: 100%;
+  }
+}

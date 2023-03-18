@@ -1,0 +1,66 @@
+/* src/css/Education.module.css */
+.educationSection {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.educationList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.educationItem {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+.educationItem h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.educationItem p {
+  margin-bottom: 0.5rem;
+}
+
+.educationImage {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .educationList {
+    flex-direction: column;
+  }
+
+  .educationItem {
+    width: 100%;
+    max-width: 400px;
+    margin: 0.5rem auto;
+  }
+}
