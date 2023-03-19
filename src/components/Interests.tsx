@@ -1,4 +1,3 @@
-// src/components/Interests.tsx
 import React from "react";
 import styles from "../css/Interests.module.css";
 import animePlaceholder from "../images/anime.jpg";
