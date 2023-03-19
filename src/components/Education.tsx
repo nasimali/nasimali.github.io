@@ -1,4 +1,3 @@
-// src/components/Education.tsx
 import React from "react";
 import styles from "../css/Education.module.css";
 import gladesmoreLogo from "../images/gladesmore_logo.png";

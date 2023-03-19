@@ -1,4 +1,3 @@
-// src/components/About.tsx
 import React from "react";
 import styles from "../css/About.module.css";
 import profilePic from "../images/profile-pic.jpeg";

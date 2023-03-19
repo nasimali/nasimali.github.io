@@ -1,4 +1,3 @@
-// src/components/Timeline.tsx
 import React from "react";
 import styles from "../css/Timeline.module.css";
 import amexLogo from "../images/american_express_logo.jpeg";
