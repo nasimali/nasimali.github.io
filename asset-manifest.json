@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a3045721.css",
+    "main.js": "/static/js/main.208fd635.js",
+    "static/js/496.fd34ce34.chunk.js": "/static/js/496.fd34ce34.chunk.js",
+    "static/media/starry-background-image.jpg": "/static/media/starry-background-image.86c86a1a3cf162970073.jpg",
+    "static/media/kickboxing_gloves_placeholder.jpg": "/static/media/kickboxing_gloves_placeholder.64b91a02d2a00a18e6d9.jpg",
+    "static/media/anime.jpg": "/static/media/anime.c39555a4aa4f6062363b.jpg",
+    "static/media/technology_placeholder.jpg": "/static/media/technology_placeholder.71ee577bf8a0100456f2.jpg",
+    "static/media/coding_placeholder.jpg": "/static/media/coding_placeholder.b26906aa0583f6492fd3.jpg",
+    "static/media/sky_logo.jpeg": "/static/media/sky_logo.9d1509cf3bc827325c40.jpeg",
+    "static/media/american_express_logo.jpeg": "/static/media/american_express_logo.b9f2a0688f20081c6e3c.jpeg",
+    "static/media/gladesmore_logo.png": "/static/media/gladesmore_logo.0f1ed8e90679a3eacbb6.png",
+    "static/media/kcl_logo.png": "/static/media/kcl_logo.22f916d90e61bc84f0af.png",
+    "static/media/profile-pic.jpeg": "/static/media/profile-pic.bd0d26c46577ae78ba3f.jpeg",
+    "index.html": "/index.html",
+    "static/media/cursor.cur": "/static/media/cursor.1f5fb3ce7389bded4e78.cur",
+    "main.a3045721.css.map": "/static/css/main.a3045721.css.map",
+    "main.208fd635.js.map": "/static/js/main.208fd635.js.map",
+    "496.fd34ce34.chunk.js.map": "/static/js/496.fd34ce34.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a3045721.css",
+    "static/js/main.208fd635.js"
+  ]
+}
