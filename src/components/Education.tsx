@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../css/Education.module.css";
 import gladesmoreLogo from "../images/gladesmore_logo.png";
 import kclLogo from "../images/kcl_logo.png";
+import educationData from "../resources/Education.json";
 
 const getImageSrc = (imageUrl: string) => {
   switch (imageUrl) {
@@ -9,28 +10,10 @@ const getImageSrc = (imageUrl: string) => {
       return gladesmoreLogo;
     case "kcl_logo":
       return kclLogo;
-    // Add more cases if necessary
     default:
-      return ""; // return an empty string or a default image
+      return "";
   }
 };
-
-const educationData = [
-  {
-    id: 1,
-    institution: "Gladesmore Community School",
-    degree: "GCSE/BTEC Level 3 Ext Dip",
-    year: "Sep 2010 - Jul 2015",
-    imageUrl: "gladesmore_logo",
-  },
-  {
-    id: 2,
-    institution: "King's College London, University of London",
-    degree: "Bachelor of Science in Computer Science with Management",
-    year: "Sep 2015 - Sep 2019",
-    imageUrl: "kcl_logo",
-  },
-];
 
 const Education: React.FC = () => {
   return (

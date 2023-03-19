@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "institution": "Gladesmore Community School",
+    "degree": "GCSE/BTEC Level 3 Ext Dip",
+    "year": "Sep 2010 - Jul 2015",
+    "imageUrl": "gladesmore_logo"
+  },
+  {
+    "id": 2,
+    "institution": "King's College London, University of London",
+    "degree": "Bachelor of Science in Computer Science with Management",
+    "year": "Sep 2015 - Sep 2019",
+    "imageUrl": "kcl_logo"
+  }
+]

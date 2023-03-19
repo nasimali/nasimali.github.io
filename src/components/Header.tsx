@@ -18,15 +18,19 @@ const Header = () => {
         </div>
         <div className={`${styles.navLinks} ${showMenu ? styles.showNav : ""}`}>
           <Link to="/" onClick={() => setShowMenu(false)}>
+            <i className={`fas fa-user ${styles.icon}`}></i>
             About
           </Link>
-          <Link to="/experience" onClick={() => setShowMenu(false)}>
-            Experience
+          <Link to="/experiences" onClick={() => setShowMenu(false)}>
+            <i className={`fas fa-briefcase ${styles.icon}`}></i>
+            Experiences
           </Link>
           <Link to="/education" onClick={() => setShowMenu(false)}>
+            <i className={`fa-solid fa-school ${styles.icon}`}></i>
             Education
           </Link>
           <Link to="/interests" onClick={() => setShowMenu(false)}>
+            <i className={`fas fa-star ${styles.icon}`}></i>
             Interests
           </Link>
           <a
@@ -35,6 +39,7 @@ const Header = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
+            <i className={`fa-brands fa-square-github ${styles.icon}`}></i>
             GitHub
           </a>
           <a
@@ -43,6 +48,7 @@ const Header = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
+            <i className={`fab fa-linkedin ${styles.icon}`}></i>
             LinkedIn
           </a>
         </div>
