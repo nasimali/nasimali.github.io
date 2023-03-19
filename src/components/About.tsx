@@ -1,11 +1,19 @@
 // src/components/About.tsx
 import React from "react";
 import styles from "../css/About.module.css";
+import profilePic from "../images/profile-pic.jpeg";
 
 const About: React.FC = () => {
   return (
     <section className={styles.aboutSection} id="about">
       <div className={styles.aboutContent}>
+        <div className={styles.profilePicContainer}>
+          <img
+            alt="Profile Pic"
+            className={styles.profilePic}
+            src={profilePic}
+          />
+        </div>
         <h2 className={styles.title}>About Me</h2>
         <p className={styles.description}>
           I am a highly dedicated and hard-working individual who began my

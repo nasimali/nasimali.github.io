@@ -1,4 +1,16 @@
-/* src/css/About.module.css */
+.profilePicContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.profilePic {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
 .aboutSection {
   padding: 2rem 1rem;
   text-align: center;
