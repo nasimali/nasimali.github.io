@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.d37d45ac.css",
-    "main.js": "/static/js/main.a4c55a9a.js",
+    "main.js": "/static/js/main.cf5855d6.js",
     "static/js/496.fd34ce34.chunk.js": "/static/js/496.fd34ce34.chunk.js",
     "static/media/starry-background-image.jpg": "/static/media/starry-background-image.86c86a1a3cf162970073.jpg",
     "static/media/kickboxing_gloves_placeholder.jpg": "/static/media/kickboxing_gloves_placeholder.64b91a02d2a00a18e6d9.jpg",
@@ -17,11 +17,11 @@
     "index.html": "/index.html",
     "static/media/cursor.cur": "/static/media/cursor.1f5fb3ce7389bded4e78.cur",
     "main.d37d45ac.css.map": "/static/css/main.d37d45ac.css.map",
-    "main.a4c55a9a.js.map": "/static/js/main.a4c55a9a.js.map",
+    "main.cf5855d6.js.map": "/static/js/main.cf5855d6.js.map",
     "496.fd34ce34.chunk.js.map": "/static/js/496.fd34ce34.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d37d45ac.css",
-    "static/js/main.a4c55a9a.js"
+    "static/js/main.cf5855d6.js"
   ]
 }
