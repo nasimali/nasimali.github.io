@@ -52,7 +52,11 @@ const Header = () => {
             LinkedIn
           </a>
         </div>
-        <button className={styles.hamburger} onClick={handleMenuToggle}>
+        <button
+          className={styles.hamburger}
+          onClick={handleMenuToggle}
+          aria-label="Menu"
+        >
           <span></span>
           <span></span>
           <span></span>
