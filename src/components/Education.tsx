@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../css/Education.module.css";
 import gladesmoreLogo from "../images/gladesmore_logo.png";
 import kclLogo from "../images/kcl_logo.png";
 import achievementData from "../resources/Achievements.json";
 import educationData from "../resources/Education.json";
+
+interface AchievementProps {
+  achievement: {
+    id: number;
+    name: string;
+    date: string;
+    certificationUrl?: string;
+    details: string;
+  };
+}
 
 const getImageSrc = (imageUrl: string) => {
   switch (imageUrl) {
@@ -14,6 +24,49 @@ const getImageSrc = (imageUrl: string) => {
     default:
       return "";
   }
+};
+
+const AchievementItem: React.FC<AchievementProps> = ({ achievement }) => {
+  const [flip, setFlip] = useState(false);
+
+  const handleFlip = () => {
+    setFlip(!flip);
+  };
+
+  return (
+    <li
+      key={achievement.id}
+      className={`${styles.achievementItem} ${flip ? styles.flip : ""}`}
+      onClick={() => {
+        if (achievement.details) {
+          handleFlip();
+        }
+      }}
+    >
+      {achievement.details && (
+        <i className={`fa-solid fa-rotate ${styles.icon}`}></i>
+      )}
+      <div className={styles.front}>
+        <h3>{achievement.name}</h3>
+        <p>{achievement.date}</p>
+        {achievement.certificationUrl && (
+          <a
+            href={achievement.certificationUrl}
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className={styles.certificationBox}>Show Credentials</div>
+          </a>
+        )}
+      </div>
+      <div className={styles.back}>
+        <p className={styles.achievementDetails}>{achievement.details}</p>
+      </div>
+    </li>
+  );
 };
 
 const Education: React.FC = () => {
@@ -37,19 +90,7 @@ const Education: React.FC = () => {
       <h2 className={styles.title}>Achievements</h2>
       <ul className={styles.achievementList}>
         {achievementData.map((achievement) => (
-          <li key={achievement.id} className={styles.achievementItem}>
-            <h3>{achievement.name}</h3>
-            <p>{achievement.date}</p>
-            {achievement.certificationUrl && (
-              <a
-                href={achievement.certificationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className={styles.certificationBox}>Show Credentials</div>
-              </a>
-            )}
-          </li>
+          <AchievementItem key={achievement.id} achievement={achievement} />
         ))}
       </ul>
     </section>

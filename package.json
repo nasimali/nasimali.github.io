@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.3",
-    "@types/react": "^17.0.37",
+    "@types/react": "^17.0.53",
     "eslint": "^8.36.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
