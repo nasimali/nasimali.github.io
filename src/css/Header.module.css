@@ -64,12 +64,6 @@
   cursor: pointer;
 }
 
-.hamburger span {
-  width: 100%;
-  height: 4px;
-  background-color: #ffffff;
-}
-
 .showNav {
   display: flex;
   flex-direction: column;
@@ -112,13 +106,10 @@
   flex-wrap: wrap;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .navLinks {
     display: none;
     text-align: center;
-  }
-  .hamburger {
-    display: flex;
   }
 
   .showNav {
@@ -127,6 +118,56 @@
 
   .showNav Link {
     margin-left: 0;
+  }
+
+  .hamburger {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    padding: 0;
+    height: 24px;
+    width: 24px;
+    background-color: transparent;
+    border: none;
+  }
+
+  .hamburger span,
+  .hamburger span:before,
+  .hamburger span:after {
+    display: block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 3px;
+    transition: transform 0.2s ease-out;
+  }
+
+  .hamburger span:before {
+    content: "";
+    top: -8px;
+  }
+
+  .hamburger span:after {
+    content: "";
+    bottom: -8px;
+  }
+
+  .hamburger span {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .hamburger.active span {
+    background-color: transparent;
+  }
+
+  .hamburger.active span:before {
+    transform: rotate(45deg);
+  }
+
+  .hamburger.active span:after {
+    transform: rotate(-45deg);
   }
 }
 

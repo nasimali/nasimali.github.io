@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../css/Header.module.css";
 
@@ -9,6 +9,24 @@ const Header = () => {
     setShowMenu(!showMenu);
   };
 
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      window.addEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [showMenu]);
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -16,7 +34,10 @@ const Header = () => {
           <h1 className={styles.name}>Nasim Ali</h1>
           <h2 className={styles.role}>Software Engineer</h2>
         </div>
-        <div className={`${styles.navLinks} ${showMenu ? styles.showNav : ""}`}>
+        <div
+          className={`${styles.navLinks} ${showMenu ? styles.showNav : ""}`}
+          ref={menuRef}
+        >
           <Link to="/" onClick={() => setShowMenu(false)}>
             <i className={`fas fa-user ${styles.icon}`}></i>
             About
@@ -27,7 +48,7 @@ const Header = () => {
           </Link>
           <Link to="/education" onClick={() => setShowMenu(false)}>
             <i className={`fa-solid fa-school ${styles.icon}`}></i>
-            Education
+            Education & Achievements
           </Link>
           <Link to="/interests" onClick={() => setShowMenu(false)}>
             <i className={`fas fa-star ${styles.icon}`}></i>

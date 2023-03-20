@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Student of the week",
+    "date": "Nov 2014",
+    "certificationUrl": ""
+  },
+  {
+    "id": 2,
+    "name": "Cisco Networking Certification Lvl 2",
+    "date": "Jun 2015",
+    "certificationUrl": ""
+  },
+  {
+    "id": 3,
+    "name": "freeCodeCamp.org: JavaScript Algorithms and Data Structures",
+    "date": "Mar 2023",
+    "certificationUrl": "https://freecodecamp.org/certification/lazysamurai/javascript-algorithms-and-data-structures"
+  },
+  {
+    "id": 4,
+    "name": "Code Academy: Full-Stack Engineer",
+    "date": "Mar 2023",
+    "certificationUrl": "https://www.codecademy.com/profiles/lazysamurai9712/certificates/ffd0f42cce1a44e9a0108b365047a0a6"
+  }
+]

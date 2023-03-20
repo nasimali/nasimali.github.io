@@ -47,6 +47,71 @@
   border-radius: 5px;
 }
 
+.achievementList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.achievementItem {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+  padding-bottom: 4rem;
+}
+
+.achievementItem h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.achievementItem p {
+  margin-bottom: 0.5rem;
+}
+
+.achievementItem a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.achievementItem a:hover {
+  color: #cccccc;
+}
+
+.certificationBox {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #440253;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 4rem;
+  box-sizing: border-box;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.certificationBox:hover {
+  background-color: #22012a;
+  font-weight: bold;
+}
+
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .title {
@@ -58,6 +123,16 @@
   }
 
   .educationItem {
+    width: 100%;
+    max-width: 400px;
+    margin: 0.5rem auto;
+  }
+
+  .achievementList {
+    flex-direction: column;
+  }
+
+  .achievementItem {
     width: 100%;
     max-width: 400px;
     margin: 0.5rem auto;
