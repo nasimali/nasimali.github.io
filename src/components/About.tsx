@@ -1,37 +1,65 @@
 import React from "react";
-import styles from "../css/About.module.css";
-import profilePic from "../images/profile-pic.jpeg";
+import DynamicIcon from "./DynamicIcon";
+import { motion } from "framer-motion";
+import {getConfigData} from "../lib/fetchConfig.ts";
 
 const About: React.FC = () => {
-  return (
-    <section className={styles.aboutSection} id="about">
-      <div className={styles.aboutContent}>
-        <div className={styles.profilePicContainer}>
-          <img
-            alt="Profile Pic"
-            className={styles.profilePic}
-            src={profilePic}
-          />
-        </div>
-        <h2 className={styles.title}>About Me</h2>
-        <p className={styles.description}>
-          I am a highly dedicated and hard-working individual who began my
-          academic journey in computer science at the young age of 16. Now, as a
-          proficient full-stack engineer, I have gained experience in a diverse
-          array of programming languages, including Java, HTML, JavaScript
-          (React), PostgreSQL, and Kotlin. My expertise as a full-stack engineer
-          allows me to seamlessly navigate between front-end and back-end
-          development, enabling me to efficiently tackle complex projects and
-          provide well-rounded solutions. Driven by an insatiable desire to
-          expand my knowledge and skills, I continually seek new opportunities
-          to learn and grow, both personally and professionally. My passion for
-          technology, coupled with my commitment to excellence, empowers me to
-          confidently overcome challenges and contribute significantly to the
-          success of any project I am involved in.
-        </p>
-      </div>
-    </section>
-  );
-};
+    const { about } = getConfigData().textContent;
 
+    return (
+        <section id="about" className="py-16 md:py-24 bg-secondary/30 dark:bg-secondary/10 rounded-none sm:rounded-xl scroll-mt-16">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
+                >
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-primary-foreground">{about.heading}</h2>
+                    <p className="text-lg text-muted-foreground">
+                        {about.subheading}
+                    </p>
+                </motion.div>
+                <div className="grid md:grid-cols-5 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                        className="md:col-span-2 relative group"
+                    >
+                        <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur-md opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                        <img
+                            src={about.imageSrc}
+                            alt={about.imageAlt}
+                            className="rounded-lg shadow-xl w-full h-auto relative object-cover"
+                            onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                                e.currentTarget.src = "https://placehold.co/600x750/333333/FFFFFF?text=Image+Not+Found";
+                            }}
+                        />
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+                        className="md:col-span-3 space-y-6"
+                    >
+                        <DynamicIcon name="UserCheck" className="w-12 h-12 text-primary mb-4" />
+                        <h3 className="text-2xl font-semibold text-foreground">{about.philosophyTitle}</h3>
+                        <p className="text-lg text-foreground/90 leading-relaxed">
+                            <span className="font-semibold">{about.greeting}</span> {about.bioParagraphs[0]}
+                        </p>
+                        {about.bioParagraphs.slice(1).map((paragraph: string, index: number) => (
+                            <p key={index} className="text-lg text-foreground/90 leading-relaxed">
+                                {paragraph}
+                            </p>
+                        ))}
+                    </motion.div>
+                </div>
+            </div>
+        </section>
+    );
+};
 export default About;
