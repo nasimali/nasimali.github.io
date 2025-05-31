@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Sun, Moon, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import {Button} from "./ui/button.tsx";
 import type {NavLinkItem, NavLinkProps} from "../lib/types.ts";
 import {getConfigData} from "../lib/fetchConfig.ts";
@@ -38,8 +38,8 @@ interface NavbarProps {
     activeSection: string;
     setActiveSection: (sectionId: string) => void;
 }
-
-const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode, activeSection, setActiveSection }) => {
+// props - darkMode, toggleDarkMode,
+const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -95,9 +95,9 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, toggleDarkMode, activeSection
                     ))}
                 </div>
                 <div className="flex items-center">
-                    <Button variant="ghost" size="icon" onClick={toggleDarkMode} aria-label="Toggle dark mode" className="text-muted-foreground hover:text-foreground">
-                        {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                    </Button>
+                    {/*<Button variant="ghost" size="icon" onClick={toggleDarkMode} aria-label="Toggle dark mode" className="text-muted-foreground hover:text-foreground">*/}
+                    {/*    {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}*/}
+                    {/*</Button>*/}
                     <div className="md:hidden ml-2">
                         <Button variant="ghost" size="icon" aria-label="Open menu" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-muted-foreground hover:text-foreground">
                             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

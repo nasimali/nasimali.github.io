@@ -12,11 +12,12 @@ import {getConfigData} from "../src/lib/fetchConfig.ts";
 
 const App: React.FC = () => {
     const textContent = getConfigData().textContent;
-    const [darkMode, setDarkMode] = useState<boolean>(() => {
-        const savedMode = localStorage.getItem("darkMode");
-        if (savedMode) return JSON.parse(savedMode);
-        return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    });
+    // const [darkMode, setDarkMode] = useState<boolean>(() => {
+    //     const savedMode = localStorage.getItem("darkMode");
+    //     if (savedMode) return JSON.parse(savedMode);
+    //     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    // });
+    const [darkMode, setDarkMode] = useState<boolean>(false);
     const [activeSection, setActiveSection] = useState<string>("home");
 
     // Update document title and meta description dynamically
@@ -29,18 +30,19 @@ const App: React.FC = () => {
     }, []);
 
 
-    useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("darkMode", JSON.stringify(true));
-        } else {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("darkMode", JSON.stringify(false));
-        }
-    }, [darkMode]);
+    // useEffect(() => {
+    //     if (darkMode) {
+    //         document.documentElement.classList.add("dark");
+    //         localStorage.setItem("darkMode", JSON.stringify(true));
+    //     } else {
+    //         document.documentElement.classList.remove("dark");
+    //         localStorage.setItem("darkMode", JSON.stringify(false));
+    //     }
+    // }, [darkMode]);
 
     const toggleDarkMode = () => {
-        setDarkMode(prevMode => !prevMode);
+         setDarkMode(prevMode => !prevMode);
+         setDarkMode(false);
     };
 
     useEffect(() => {
