@@ -1,4 +1,4 @@
-// nasim-ali-portfolio/tailwind.config.js
+/* eslint-disable @typescript-eslint/no-require-imports, no-undef */
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -88,7 +88,7 @@ export default {
         },
     },
     plugins: [
-            require('@tailwindcss/typography'), // Typography plugin for better prose styling
-    require('tailwindcss-animate')
+        require('@tailwindcss/typography'),
+        require('tailwindcss-animate')
     ],
 };
