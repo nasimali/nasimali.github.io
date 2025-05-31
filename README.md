@@ -1,8 +1,8 @@
-# 🌐 nasim.dev — Personal Website & Online CV of Nasim Ali
+# 🌐 nasim.dev — Personal Website of Nasim Ali
 
 Welcome to the source code of [www.nasim.dev](https://www.nasim.dev) — a fully responsive personal website for **Nasim Ali**, a Full-Stack Software Engineer based in UK.
 
-> This site is powered by **React**, **TypeScript**, **Tailwind CSS**, and **Vite** — with content loaded from a config repo. 🎯
+> This site is powered by **React**, **TypeScript**, **Tailwind CSS**, and **Vite** 🎯
 
 ---
 
