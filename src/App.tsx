@@ -1,25 +1,22 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Navbar from '../src/components/Navbar';
-import Hero from '../src/components/Hero'; // Eager load: top of page
+import Hero from '../src/components/Hero';
+import About from '../src/components/About';
+import Skills from '../src/components/Skills';
+import Projects from '../src/components/Projects';
+import Experience from '../src/components/Experience';
+import Education from '../src/components/Education';
+import Contact from '../src/components/Contact';
+import Footer from '../src/components/Footer';
 import { getConfigData } from '../src/lib/fetchConfig.ts';
-
-// Lazy-loaded components
-const About = lazy(() => import('../src/components/About'));
-const Skills = lazy(() => import('../src/components/Skills'));
-const Projects = lazy(() => import('../src/components/Projects'));
-const Experience = lazy(() => import('../src/components/Experience'));
-const Education = lazy(() => import('../src/components/Education'));
-const Contact = lazy(() => import('../src/components/Contact'));
-const Footer = lazy(() => import('../src/components/Footer'));
-
+import './App.css';
 const App: React.FC = () => {
   const textContent = getConfigData().textContent;
-  // const [darkMode, setDarkMode] = useState<boolean>(() => {
-  //     const savedMode = localStorage.getItem("darkMode");
-  //     if (savedMode) return JSON.parse(savedMode);
-  //     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  // });
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode) return JSON.parse(savedMode);
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
   const [activeSection, setActiveSection] = useState<string>('home');
 
   // Update document title and meta description dynamically
@@ -31,19 +28,18 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //     if (darkMode) {
-  //         document.documentElement.classList.add("dark");
-  //         localStorage.setItem("darkMode", JSON.stringify(true));
-  //     } else {
-  //         document.documentElement.classList.remove("dark");
-  //         localStorage.setItem("darkMode", JSON.stringify(false));
-  //     }
-  // }, [darkMode]);
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('darkMode', JSON.stringify(true));
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('darkMode', JSON.stringify(false));
+    }
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode);
-    setDarkMode(false);
   };
 
   useEffect(() => {
@@ -51,27 +47,36 @@ const App: React.FC = () => {
 
     const observer = new IntersectionObserver(
       (entries) => {
+        let mostVisible: IntersectionObserverEntry | null = null;
+
         entries.forEach((entry) => {
-          if (
-            entry.isIntersecting &&
-            (entry.intersectionRatio >= 0.4 || entry.boundingClientRect.top <= 150)
-          ) {
-            setActiveSection(entry.target.id);
+          if (entry.isIntersecting) {
+            if (!mostVisible || entry.intersectionRatio > mostVisible.intersectionRatio) {
+              mostVisible = entry;
+            }
           }
         });
+
+        if (mostVisible) {
+          const target = (mostVisible as IntersectionObserverEntry).target as HTMLElement;
+          setActiveSection(target.id);
+        }
       },
       {
-        rootMargin: '-40% 0px -40% 0px',
-        threshold: [0.1, 0.4, 0.8],
+        threshold: [0.25, 0.5, 0.75],
       }
     );
 
     sections.forEach((section) => observer.observe(section));
-    return () => sections.forEach((section) => observer.unobserve(section));
+
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans transition-colors duration-300 selection:bg-primary/70 selection:text-primary-foreground">
+    <div
+      className={`min-h-screen font-sans transition-colors duration-300 selection:bg-primary/70 selection:text-primary-foreground
+    ${darkMode ? 'dark' : ''} bg-background text-foreground`}
+    >
       <Navbar
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}

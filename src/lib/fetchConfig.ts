@@ -65,6 +65,7 @@ interface ContactSection extends SectionHeading {
   errorMessage: string;
   socialPrompt: string;
   socialLinks: SocialLink[];
+  hostName: string;
 }
 
 interface SocialLink {

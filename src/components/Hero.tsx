@@ -23,8 +23,11 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-3xl z-10">
+    <section
+      id="home"
+      className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800"
+    >
+      <div className="max-w-3xl z-10 px-4">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

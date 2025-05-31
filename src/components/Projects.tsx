@@ -112,9 +112,10 @@ const Projects: React.FC = () => {
                           href={project.repoLink}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label={`View ${project.title} repository on GitHub`}
                           className="flex items-center text-muted-foreground hover:text-foreground"
                         >
-                          <Github className="mr-1.5 h-4 w-4" /> Code
+                          <Github className="mr-1.5 h-4 w-4" />
                         </a>
                       </Button>
                     )}

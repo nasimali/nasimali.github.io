@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { Button } from './ui/button.tsx';
 import type { NavLinkItem, NavLinkProps } from '../lib/types.ts';
 import { getConfigData } from '../lib/fetchConfig.ts';
@@ -16,8 +16,8 @@ const NavLink: React.FC<NavLinkProps> = ({
     className={`px-3 py-2 rounded-md text-sm font-medium transition-colors block sm:inline-block w-full text-left sm:w-auto sm:text-center
       ${
         activeSection === item.id
-          ? 'bg-primary text-primary-foreground'
-          : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
+          : 'text-gray-500 hover:text-black hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800'
       }`}
     onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
@@ -46,8 +46,13 @@ interface NavbarProps {
   activeSection: string;
   setActiveSection: (sectionId: string) => void;
 }
-// props - darkMode, toggleDarkMode,
-const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection }) => {
+
+const Navbar: React.FC<NavbarProps> = ({
+  darkMode,
+  toggleDarkMode,
+  activeSection,
+  setActiveSection,
+}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -64,7 +69,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection }) => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768 && mobileMenuOpen) {
-        // 768px is md breakpoint in Tailwind
         setMobileMenuOpen(false);
       }
     };
@@ -75,7 +79,11 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection }) => {
   return (
     <nav
       className={`fixed top-0 z-50 w-full transition-all duration-300 
-      ${isScrolled || mobileMenuOpen ? 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-md border-b border-border/40' : 'bg-transparent border-b border-transparent'}`}
+      ${
+        isScrolled || mobileMenuOpen
+          ? 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-md border-b border-border/40 dark:bg-background/80 dark:border-border/30'
+          : 'bg-transparent border-b border-transparent dark:border-transparent'
+      }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
         <a
@@ -83,11 +91,10 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection }) => {
           onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
             e.preventDefault();
             setActiveSection('home');
-            // Scroll to the very top for #home
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if (mobileMenuOpen) setMobileMenuOpen(false);
           }}
-          className="text-2xl font-bold text-primary transition-colors hover:text-primary/80"
+          className="text-2xl font-bold text-primary transition-colors hover:text-primary/80 dark:text-primary dark:hover:text-primary/70"
           aria-label="Homepage"
         >
           {siteName}
@@ -105,25 +112,30 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, setActiveSection }) => {
           ))}
         </div>
         <div className="flex items-center">
-          {/*<Button variant="ghost" size="icon" onClick={toggleDarkMode} aria-label="Toggle dark mode" className="text-muted-foreground hover:text-foreground">*/}
-          {/*    {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}*/}
-          {/*</Button>*/}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleDarkMode}
+            aria-label="Toggle dark mode"
+            className="text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground"
+          >
+            {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </Button>
           <div className="md:hidden ml-2">
             <Button
               variant="ghost"
               size="icon"
               aria-label="Open menu"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground"
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
       </div>
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg border-t border-border/40">
+        <div className="md:hidden bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg border-t border-border/40 dark:bg-background/80 dark:border-border/30">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((item: NavLinkItem) => (
               <NavLink
