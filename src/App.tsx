@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import Navbar from '../src/components/Navbar';
-import Hero from '../src/components/Hero';
-import About from '../src/components/About';
-import Skills from '../src/components/Skills';
-import Projects from '../src/components/Projects';
-import Experience from '../src/components/Experience';
-import Education from '../src/components/Education';
-import Contact from '../src/components/Contact';
-import Footer from '../src/components/Footer';
+import Hero from '../src/components/Hero'; // Eager load: top of page
 import { getConfigData } from '../src/lib/fetchConfig.ts';
+
+// Lazy-loaded components
+const About = lazy(() => import('../src/components/About'));
+const Skills = lazy(() => import('../src/components/Skills'));
+const Projects = lazy(() => import('../src/components/Projects'));
+const Experience = lazy(() => import('../src/components/Experience'));
+const Education = lazy(() => import('../src/components/Education'));
+const Contact = lazy(() => import('../src/components/Contact'));
+const Footer = lazy(() => import('../src/components/Footer'));
 
 const App: React.FC = () => {
   const textContent = getConfigData().textContent;
@@ -50,8 +52,6 @@ const App: React.FC = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Check if the entry is intersecting and makes up a significant portion of the viewport
-          // or if its top is near the top of the viewport (for sections taller than viewport)
           if (
             entry.isIntersecting &&
             (entry.intersectionRatio >= 0.4 || entry.boundingClientRect.top <= 150)
@@ -61,12 +61,8 @@ const App: React.FC = () => {
         });
       },
       {
-        // Adjust rootMargin to effectively shrink the "viewport" for observation.
-        // Negative top margin means the "top" of the viewport for intersection purposes is lower.
-        // Negative bottom margin means the "bottom" of the viewport is higher.
-        // This setup tries to make the section in the middle of the screen active.
         rootMargin: '-40% 0px -40% 0px',
-        threshold: [0.1, 0.4, 0.8], // Multiple thresholds can help with different section sizes
+        threshold: [0.1, 0.4, 0.8],
       }
     );
 
@@ -83,17 +79,17 @@ const App: React.FC = () => {
         setActiveSection={setActiveSection}
       />
       <main className="overflow-x-hidden pt-16">
-        {' '}
-        {/* Add padding-top equal to navbar height */}
         <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
+        <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
+          <About />
+          <Skills />
+          <Projects />
+          <Experience />
+          <Education />
+          <Contact />
+          <Footer />
+        </Suspense>
       </main>
-      <Footer />
     </div>
   );
 };

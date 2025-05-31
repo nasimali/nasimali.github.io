@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { Button } from './ui/button.tsx';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card.tsx';
@@ -6,6 +6,8 @@ import DynamicIcon, { type LucideIconName } from './DynamicIcon';
 import { motion } from 'framer-motion';
 import { getConfigData } from '../lib/fetchConfig.ts';
 import type { SocialLink } from '../lib/types.ts';
+import emailjs from '@emailjs/browser';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface FormData {
   name: string;
@@ -14,7 +16,11 @@ interface FormData {
 }
 
 const Contact: React.FC = () => {
+  const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
   const { contact } = getConfigData().textContent;
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
@@ -30,8 +36,20 @@ const Contact: React.FC = () => {
     setSubmitStatus(null);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Form data submitted (simulated):', formData);
+      const token = await recaptchaRef.current?.executeAsync();
+      recaptchaRef.current?.reset();
+      if (!token) {
+        console.error('reCAPTCHA failed');
+        setSubmitStatus('error');
+        setIsSubmitting(false);
+        return;
+      }
+      await emailjs.send(
+        serviceID,
+        templateID,
+        { ...formData, 'g-recaptcha-response': token }, // optional
+        { publicKey }
+      );
       setSubmitStatus('success');
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
@@ -126,6 +144,11 @@ const Contact: React.FC = () => {
                     placeholder={contact.placeholders.message}
                     required
                   ></textarea>
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    size="invisible"
+                  />
                 </div>
                 <div>
                   <Button
