@@ -156,7 +156,7 @@ const Contact: React.FC = () => {
                 <div>
                   <Button
                     type="submit"
-                    className="w-full justify-center shadow-md hover:shadow-lg group"
+                    className="w-full justify-center shadow-md hover:text-primary/80 dark:hover:text-primary/70 dark:shadow-md group"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (

@@ -86,7 +86,7 @@ const Navbar: React.FC<NavbarProps> = ({
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <p className="text-2xl font-bold text-primary transition-colors hover:text-primary/80 dark:text-primary dark:hover:text-primary/70">
+        <p className="text-2xl font-bold text-primary transition-colors dark:text-primary">
           {siteName}
         </p>
         <div className="hidden md:flex items-center space-x-1">
