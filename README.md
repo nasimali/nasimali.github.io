@@ -2,7 +2,7 @@
 
 Welcome to the source code of [www.nasim.dev](https://www.nasim.dev) — a fully responsive personal website for **Nasim Ali**, a Full-Stack Software Engineer based in UK.
 
-> This site is powered by **React**, **TypeScript**, **Tailwind CSS v4**, and **Vite** — with dynamic content loaded from a separate config repo. 🎯
+> This site is powered by **React**, **TypeScript**, **Tailwind CSS**, and **Vite** — with content loaded from a config repo. 🎯
 
 ---
 
