@@ -24,7 +24,6 @@ const Contact: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
-  const isHost = window?.location?.hostname === contact?.hostName;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -145,18 +144,16 @@ const Contact: React.FC = () => {
                     placeholder={contact.placeholders.message}
                     required
                   ></textarea>
-                  {isHost && (
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                      size="invisible"
-                    />
-                  )}
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    size="invisible"
+                  />
                 </div>
                 <div>
                   <Button
                     type="submit"
-                    className="w-full justify-center shadow-md hover:text-primary/80 dark:hover:text-primary/70 dark:shadow-md group"
+                    className="w-full justify-center shadow-md hover:text-primary/80 dark:hover:text-primary/70 cursor-pointer dark:shadow-md group"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
