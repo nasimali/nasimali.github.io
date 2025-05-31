@@ -40,6 +40,11 @@ jobs:
       # - name: 🧪 Run tests
       #   run: npm run test
 
+      - name: 👤 Configure Git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: 🔐 Deploy to GitHub Pages
         run: npm run deploy:prod
         env:
