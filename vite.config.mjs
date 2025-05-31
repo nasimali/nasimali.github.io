@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        chunkSizeWarningLimit: 2000,
         manualChunks(id) {
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) return 'react';
