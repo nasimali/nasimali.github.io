@@ -86,19 +86,9 @@ const Navbar: React.FC<NavbarProps> = ({
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <a
-          href="#home"
-          onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-            e.preventDefault();
-            setActiveSection('home');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (mobileMenuOpen) setMobileMenuOpen(false);
-          }}
-          className="text-2xl font-bold text-primary transition-colors hover:text-primary/80 dark:text-primary dark:hover:text-primary/70"
-          aria-label="Homepage"
-        >
+        <p className="text-2xl font-bold text-primary transition-colors hover:text-primary/80 dark:text-primary dark:hover:text-primary/70">
           {siteName}
-        </a>
+        </p>
         <div className="hidden md:flex items-center space-x-1">
           {navLinks.map((item: NavLinkItem) => (
             <NavLink
