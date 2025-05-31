@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "deploy": "npm run build && gh-pages -d dist --cname www.nasim.dev",
+    "deploy:local": "npm run build && gh-pages -d dist --cname www.nasim.dev",
+    "deploy:prod": "npm run build && gh-pages -d dist --cname www.nasim.dev --repo https://x-access-token:${GITHUB_TOKEN}@github.com/nasimali/nasimali.github.io.git",
     "lint": "eslint . --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "preview": "vite preview"

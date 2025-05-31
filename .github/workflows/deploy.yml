@@ -40,5 +40,7 @@ jobs:
       # - name: 🧪 Run tests
       #   run: npm run test
 
-      - name: 🏗️ Build and deploy to GitHub Pages
-        run: npm run deploy
+      - name: 🔐 Deploy to GitHub Pages
+        run: npm run deploy:prod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
