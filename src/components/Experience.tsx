@@ -71,9 +71,7 @@ const Experience: React.FC = () => {
                   </ul>
                   {exp.skills && exp.skills.length > 0 && (
                     <div className="mt-4">
-                      <h4 className="text-xs font-semibold text-foreground/70 mb-1.5">
-                        Key Skills:
-                      </h4>
+                      <p className="text-xs font-semibold text-foreground/70 mb-1.5">Key Skills:</p>
                       <div className="flex flex-wrap gap-1.5">
                         {exp.skills.map((skill) => (
                           <Badge key={skill} variant="outline" className="text-xs">

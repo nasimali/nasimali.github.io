@@ -36,6 +36,8 @@ const About: React.FC = () => {
             <img
               src={about.imageSrc}
               alt={about.imageAlt}
+              width={865}
+              height={1300}
               className="rounded-lg shadow-xl w-full h-auto relative object-cover"
               onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
                 e.currentTarget.src =

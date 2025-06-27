@@ -69,9 +69,7 @@ const Education: React.FC = () => {
                   <p className="text-muted-foreground text-sm mb-3">{edu.description}</p>
                   {edu.highlights && edu.highlights.length > 0 && (
                     <div>
-                      <h4 className="text-xs font-semibold text-foreground/70 mb-1.5">
-                        Highlights:
-                      </h4>
+                      <p className="text-xs font-semibold text-foreground/70 mb-1.5">Highlights:</p>
                       <div className="flex flex-wrap gap-1.5">
                         {edu.highlights.map((highlight) => (
                           <Badge
