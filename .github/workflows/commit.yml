@@ -1,4 +1,3 @@
-
 name: 🧪 CI • Build 🔧 Lint Check
 
 on:
@@ -21,27 +20,29 @@ jobs:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
-      - name: 🧰 Use Node.js ${{ matrix.node-version }}
+      - name: 🧰 Setup Node.js and cache pnpm
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: 🔧 Setup pnpm
+        run: npm install -g pnpm
 
       - name: 📦 Install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
+        run: pnpm install
 
       - name: 🔍 Check for vulnerable dependencies
-        run: npm audit --audit-level=moderate
+        run: pnpm audit --audit-level=moderate
 
       - name: 🧠 TypeScript type check
-        run: npx tsc --noEmit
+        run: pnpm exec tsc --noEmit
 
       - name: 🧹 Lint code with ESLint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: ⚙️ Build project
-        run: npm run build
+        run: pnpm run build
 
       # - name: 🧪 Run tests (optional)
-      #   run: npm test
+      #   run: pnpm test

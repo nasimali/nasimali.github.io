@@ -23,9 +23,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: 'pnpm'
+
+      - name: 🔧 Setup pnpm
+        run: npm install -g pnpm
 
       - name: 📥 Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: 🛠️ Set up environment variables
         run: |
@@ -35,10 +39,10 @@ jobs:
           echo "VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}" >> .env
 
       - name: 🧹 Lint code
-        run: npm run lint
+        run: pnpm lint
 
       # - name: 🧪 Run tests
-      #   run: npm run test
+      #   run: pnpm run test
 
       - name: 👤 Configure Git author
         run: |
@@ -46,6 +50,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: 🔐 Deploy to GitHub Pages
-        run: npm run deploy:prod
+        run: pnpm deploy:prod
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
