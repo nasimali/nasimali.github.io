@@ -20,14 +20,14 @@ jobs:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
+      - name: 🅿️ Uses pnpm
+        uses: pnpm/action-setup@v4
+
       - name: 🧰 Setup Node.js and cache pnpm
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-
-      - name: 🔧 Setup pnpm
-        run: npm install -g pnpm
 
       - name: 📦 Install dependencies
         run: pnpm install
