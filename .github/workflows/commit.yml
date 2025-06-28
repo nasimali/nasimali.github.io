@@ -41,10 +41,10 @@ jobs:
         run: pnpm exec tsc --noEmit
 
       - name: 🧹 Lint code with ESLint
-        run: pnpm run lint
+        run: pnpm lint
 
       - name: ⚙️ Build project
-        run: pnpm run build
+        run: pnpm build
 
       # - name: 🧪 Run tests (optional)
       #   run: pnpm test
