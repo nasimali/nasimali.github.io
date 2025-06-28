@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Suspense } from 'react';
+import ReactGA from 'react-ga4';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -11,7 +12,8 @@ import Footer from '@/components/Footer';
 import { getConfigData } from '@/lib/fetchConfig.ts';
 import './App.css';
 const App: React.FC = () => {
-  const textContent = getConfigData().textContent;
+  const GA_TRACKING_ID = import.meta.env.GA_TRACKING_ID;
+  const { textContent } = getConfigData();
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode) return JSON.parse(savedMode);
@@ -26,6 +28,7 @@ const App: React.FC = () => {
     if (metaDesc) {
       metaDesc.setAttribute('content', textContent.metaDescription);
     }
+    ReactGA.initialize(GA_TRACKING_ID);
   }, []);
 
   useEffect(() => {
@@ -60,6 +63,7 @@ const App: React.FC = () => {
         if (mostVisible) {
           const target = (mostVisible as IntersectionObserverEntry).target as HTMLElement;
           setActiveSection(target.id);
+          ReactGA.send({ hitType: 'pageview', page: target.id });
         }
       },
       {

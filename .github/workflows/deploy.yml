@@ -39,6 +39,7 @@ jobs:
           echo "VITE_EMAILJS_SERVICE_ID=${{ secrets.VITE_EMAILJS_SERVICE_ID }}" >> .env
           echo "VITE_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_EMAILJS_TEMPLATE_ID }}" >> .env
           echo "VITE_RECAPTCHA_SITE_KEY=${{ secrets.VITE_RECAPTCHA_SITE_KEY }}" >> .env
+          echo "VITE_GA_TRACKING_ID=${{ secrets.VITE_GA_TRACKING_ID }}" >> .env
 
       - name: 🧹 Lint code
         run: pnpm lint
