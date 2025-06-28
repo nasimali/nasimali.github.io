@@ -12,7 +12,7 @@ import Footer from '@/components/Footer';
 import { getConfigData } from '@/lib/fetchConfig.ts';
 import './App.css';
 const App: React.FC = () => {
-  const GA_TRACKING_ID = import.meta.env.GA_TRACKING_ID;
+  const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
   const { textContent } = getConfigData();
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const savedMode = localStorage.getItem('darkMode');
@@ -23,6 +23,7 @@ const App: React.FC = () => {
 
   // Update document title and meta description dynamically
   useEffect(() => {
+    console.log(GA_TRACKING_ID);
     document.title = textContent.siteTitleFull;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
