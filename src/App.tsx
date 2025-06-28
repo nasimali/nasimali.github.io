@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense } from 'react';
-import ReactGA from 'react-ga4';
+import ReactGAFunctions from 'react-ga4';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -10,9 +10,11 @@ import Education from '@/components/Education';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { getConfigData } from '@/lib/fetchConfig.ts';
-import './App.css';
+import '@/App.css';
+
+const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
+
 const App: React.FC = () => {
-  const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
   const { textContent } = getConfigData();
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     const savedMode = localStorage.getItem('darkMode');
@@ -23,13 +25,12 @@ const App: React.FC = () => {
 
   // Update document title and meta description dynamically
   useEffect(() => {
-    console.log(GA_TRACKING_ID);
     document.title = textContent.siteTitleFull;
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', textContent.metaDescription);
     }
-    ReactGA.initialize(GA_TRACKING_ID);
+    ReactGAFunctions.initialize(GA_TRACKING_ID);
   }, []);
 
   useEffect(() => {
@@ -64,11 +65,12 @@ const App: React.FC = () => {
         if (mostVisible) {
           const target = (mostVisible as IntersectionObserverEntry).target as HTMLElement;
           setActiveSection(target.id);
-          ReactGA.send({ hitType: 'pageview', page: target.id });
+          document.title = target.id === 'home' ? textContent.siteTitleFull : target.id;
+          ReactGAFunctions.send({ hitType: 'pageview', page: target.id });
         }
       },
       {
-        threshold: [0.25, 0.5, 0.75],
+        threshold: 0.6,
       }
     );
 
