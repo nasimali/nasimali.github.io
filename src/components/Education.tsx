@@ -1,14 +1,21 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card.tsx';
-import { Badge } from './ui/badge.tsx';
-import DynamicIcon from './DynamicIcon';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
+import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import { getConfigData } from '../lib/fetchConfig.ts';
-import type { EducationItemJson } from '../lib/types.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const Education: React.FC = () => {
-  const educationData: EducationItemJson[] = getConfigData().education;
-  const { education: educationSectionContent } = getConfigData().textContent;
+  const {
+    education: educationData,
+    textContent: { education: educationSectionContent },
+  } = getConfigData();
 
   return (
     <section

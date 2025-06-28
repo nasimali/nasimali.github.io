@@ -1,13 +1,14 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card.tsx';
-import DynamicIcon from './DynamicIcon';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import type { SkillItem } from '../lib/types.ts';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const Skills: React.FC = () => {
-  const skillsData: SkillItem[] = getConfigData().skills;
-  const { skills: skillsSectionContent } = getConfigData().textContent;
+  const {
+    skills: skillsData,
+    textContent: { skills: skillsSectionContent },
+  } = getConfigData();
 
   return (
     <section id="skills" className="py-16 md:py-24 scroll-mt-16">

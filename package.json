@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "deploy:local": "npm run build && gh-pages -d dist --cname www.nasim.dev",
-    "deploy:prod": "npm run build && gh-pages -d dist --cname www.nasim.dev --repo https://x-access-token:${GITHUB_TOKEN}@github.com/nasimali/nasimali.github.io.git",
+    "deploy:local": "pnpm run build && gh-pages -d dist --cname www.nasim.dev",
+    "deploy:prod": "pnpm run build && gh-pages -d dist --cname www.nasim.dev --repo https://x-access-token:${GITHUB_TOKEN}@github.com/nasimali/nasimali.github.io.git",
     "lint": "eslint . --ext .ts,.tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "preview": "vite preview"
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
+    "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.5",
     "@types/react-google-recaptcha": "^2.1.9",
     "@typescript-eslint/eslint-plugin": "^8.33.0",

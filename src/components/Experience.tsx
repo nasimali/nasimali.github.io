@@ -1,14 +1,21 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card.tsx';
-import { Badge } from './ui/badge.tsx';
-import DynamicIcon from './DynamicIcon';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
+import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import type { ExperienceItemJson } from '../lib/types.ts';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const Experience: React.FC = () => {
-  const experiencesData: ExperienceItemJson[] = getConfigData().experience;
-  const { experience: experienceSectionContent } = getConfigData().textContent;
+  const {
+    experience: experiencesData,
+    textContent: { experience: experienceSectionContent },
+  } = getConfigData();
 
   return (
     <section id="experience" className="py-16 md:py-24 scroll-mt-16">

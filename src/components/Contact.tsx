@@ -1,11 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { Button } from './ui/button.tsx';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card.tsx';
-import DynamicIcon, { type LucideIconName } from './DynamicIcon';
+import { Button } from '@/components/ui/button.tsx';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card.tsx';
+import DynamicIcon, { type LucideIconName } from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import { getConfigData } from '../lib/fetchConfig.ts';
-import type { SocialLink } from '../lib/types.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
+import type { SocialLink } from '@/lib/types.ts';
 import emailjs from '@emailjs/browser';
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -19,7 +25,9 @@ const Contact: React.FC = () => {
   const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
   const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
   const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-  const { contact } = getConfigData().textContent;
+  const {
+    textContent: { contact },
+  } = getConfigData();
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);

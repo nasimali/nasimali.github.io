@@ -1,10 +1,12 @@
 import React from 'react';
-import DynamicIcon from './DynamicIcon';
+import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const About: React.FC = () => {
-  const { about } = getConfigData().textContent;
+  const {
+    textContent: { about },
+  } = getConfigData();
 
   return (
     <section

@@ -1,9 +1,11 @@
 import React from 'react';
-import DynamicIcon from './DynamicIcon';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import DynamicIcon from '@/components/DynamicIcon';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const Footer: React.FC = () => {
-  const { footer } = getConfigData().textContent;
+  const {
+    textContent: { footer },
+  } = getConfigData();
   const currentYear = new Date().getFullYear();
 
   return (

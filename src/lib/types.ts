@@ -1,4 +1,4 @@
-import type { LucideIconName } from '../../src/components/DynamicIcon.tsx';
+import type { LucideIconName } from '@/components/DynamicIcon.tsx';
 import React from 'react';
 
 export interface EducationItemJson {

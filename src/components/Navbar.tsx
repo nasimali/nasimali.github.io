@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, Moon, Sun, X } from 'lucide-react';
-import { Button } from './ui/button.tsx';
-import type { NavLinkItem, NavLinkProps } from '../lib/types.ts';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import { Button } from '@/components/ui/button.tsx';
+import type { NavLinkItem, NavLinkProps } from '@/lib/types.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const NavLink: React.FC<NavLinkProps> = ({
   item,
@@ -56,7 +56,9 @@ const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const { siteName, navLinks } = getConfigData().textContent;
+  const {
+    textContent: { siteName, navLinks },
+  } = getConfigData();
 
   useEffect(() => {
     const handleScroll = () => {

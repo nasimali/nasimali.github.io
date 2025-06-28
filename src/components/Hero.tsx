@@ -1,12 +1,14 @@
 import React from 'react';
 import { ArrowDown } from 'lucide-react';
-import { Button } from './ui/button.tsx';
-import DynamicIcon from './DynamicIcon';
+import { Button } from '@/components/ui/button.tsx';
+import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const Hero: React.FC = () => {
-  const { hero } = getConfigData().textContent;
+  const {
+    textContent: { hero },
+  } = getConfigData();
 
   const smoothScrollToId = (id: string) => {
     const element = document.getElementById(id);

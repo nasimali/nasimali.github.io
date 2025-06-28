@@ -7,17 +7,18 @@ import {
   CardContent,
   CardFooter,
   CardDescription,
-} from './ui/card.tsx';
-import { Badge } from './ui/badge.tsx';
-import { Button } from './ui/button.tsx';
-import DynamicIcon from './DynamicIcon';
+} from '@/components/ui/card.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import type { ProjectItem } from '../lib/types.ts';
-import { getConfigData } from '../lib/fetchConfig.ts';
+import { getConfigData } from '@/lib/fetchConfig.ts';
 
 const Projects: React.FC = () => {
-  const projectsData: ProjectItem[] = getConfigData().projects;
-  const { projects: projectsSectionContent } = getConfigData().textContent;
+  const {
+    projects: projectsData,
+    textContent: { projects: projectsSectionContent },
+  } = getConfigData();
 
   return (
     <section
