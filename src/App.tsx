@@ -16,6 +16,7 @@ import { devLog } from '@/lib/devLogger.ts';
 import { getConsentCookie, setConsentCookie } from '@/lib/cookieConsentManager.ts';
 
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
+const ReactGA = ReactGAFunctions;
 
 const App: React.FC = () => {
   const { textContent } = getConfigData();
@@ -35,7 +36,7 @@ const App: React.FC = () => {
     }
     const consent = getConsentCookie();
     if (consent === 'true') {
-      ReactGAFunctions.initialize(GA_TRACKING_ID);
+      ReactGA.initialize(GA_TRACKING_ID);
     }
   }, []);
 
@@ -74,7 +75,7 @@ const App: React.FC = () => {
           document.title = target.id === 'home' ? textContent.siteTitleFull : target.id;
           const consent = getConsentCookie();
           if (consent === 'true') {
-            ReactGAFunctions.send({ hitType: 'pageview', page: target.id });
+            ReactGA.send({ hitType: 'pageview', page: target.id });
           }
         }
       },
@@ -114,7 +115,7 @@ const App: React.FC = () => {
       <ConsentBanner
         onAccept={() => {
           setConsentCookie(true);
-          ReactGAFunctions.initialize(GA_TRACKING_ID);
+          ReactGA.initialize(GA_TRACKING_ID);
         }}
         onReject={() => {
           devLog('Analytics tracking was rejected by the user.');
