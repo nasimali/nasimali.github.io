@@ -11,6 +11,9 @@ import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { getConfigData } from '@/lib/fetchConfig.ts';
 import '@/App.css';
+import ConsentBanner from '@/components/ConsentBanner.tsx';
+import { devLog } from '@/lib/devLogger.ts';
+import { getConsentCookie, setConsentCookie } from '@/lib/cookieConsentManager.ts';
 
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
 
@@ -30,7 +33,10 @@ const App: React.FC = () => {
     if (metaDesc) {
       metaDesc.setAttribute('content', textContent.metaDescription);
     }
-    ReactGAFunctions.initialize(GA_TRACKING_ID);
+    const consent = getConsentCookie();
+    if (consent === 'true') {
+      ReactGAFunctions.initialize(GA_TRACKING_ID);
+    }
   }, []);
 
   useEffect(() => {
@@ -66,7 +72,10 @@ const App: React.FC = () => {
           const target = (mostVisible as IntersectionObserverEntry).target as HTMLElement;
           setActiveSection(target.id);
           document.title = target.id === 'home' ? textContent.siteTitleFull : target.id;
-          ReactGAFunctions.send({ hitType: 'pageview', page: target.id });
+          const consent = getConsentCookie();
+          if (consent === 'true') {
+            ReactGAFunctions.send({ hitType: 'pageview', page: target.id });
+          }
         }
       },
       {
@@ -102,6 +111,15 @@ const App: React.FC = () => {
           <Footer />
         </Suspense>
       </main>
+      <ConsentBanner
+        onAccept={() => {
+          setConsentCookie(true);
+          ReactGAFunctions.initialize(GA_TRACKING_ID);
+        }}
+        onReject={() => {
+          devLog('Analytics tracking was rejected by the user.');
+        }}
+      />
     </div>
   );
 };
