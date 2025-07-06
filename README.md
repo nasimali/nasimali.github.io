@@ -23,6 +23,43 @@ Welcome to the source code of [www.nasim.dev](https://www.nasim.dev) — a fully
 
 ---
 
+## 🔧 Getting Started
+
+Follow these instructions to get a local copy up and running for development and testing purposes.
+
+### Prerequisites
+
+- **Node.js**: Version `18.x` or newer
+- **pnpm**: Version `10.x` or newer  
+  Install via npm:
+  ```bash
+  npm install -g pnpm
+  ```
+
+### 🚀 Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/nasimali/nasimali.github.io.git
+   ```
+
+2. **Navigate to the project directory:**
+   ```bash
+   cd nasimali.github.io
+   ```
+
+3. **Install dependencies using pnpm:**
+   ```bash
+   pnpm install
+   ```
+
+4. **Set up environment variables:**
+
+   Create a `.env` file in the root of the project by copying the example file:
+   ```bash
+   cp .env.example .env
+   ```
+
 ## 📦 Dynamic Config Architecture
 
 All site content (hero text, about, skills, experience, projects, etc.) is loaded **dynamically** from this repo:  
