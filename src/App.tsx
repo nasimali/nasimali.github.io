@@ -74,7 +74,7 @@ const App: React.FC = () => {
           setActiveSection(target.id);
           document.title = target.id === 'home' ? textContent.siteTitleFull : target.id;
           const consent = getConsentCookie();
-          if (consent === 'true') {
+          if (consent === 'true' && ReactGA) {
             ReactGA.send({ hitType: 'pageview', page: target.id });
           }
         }
