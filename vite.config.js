@@ -13,7 +13,7 @@ export default defineConfig({
     compression({
       algorithm: 'brotliCompress',
       ext: '.br',
-      deleteOriginFile: true,
+      deleteOriginFile: false,
     }),
     Inspect(),
   ],
