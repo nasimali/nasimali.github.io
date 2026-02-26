@@ -46,8 +46,9 @@ const Contact = () => {
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsContactInView(entry.isIntersecting);
+      (entries) => {
+        const entry = entries[0];
+        setIsContactInView(Boolean(entry?.isIntersecting));
       },
       {
         root: null,
