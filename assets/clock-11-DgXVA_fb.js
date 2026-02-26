@@ -1,0 +1,1 @@
+import{createLucideIcon as c}from"./index-Bqfm2T3r.js";const o=[["path",{d:"M12 6v6l-2-4",key:"ns39ag"}],["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}]],t=c("clock-11",o);export{o as __iconNode,t as default};

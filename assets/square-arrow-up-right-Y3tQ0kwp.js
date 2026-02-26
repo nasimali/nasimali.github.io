@@ -1,0 +1,1 @@
+import{createLucideIcon as t}from"./index-Bqfm2T3r.js";const e=[["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2",key:"afitv7"}],["path",{d:"M8 8h8v8",key:"b65dnt"}],["path",{d:"m8 16 8-8",key:"13b9ih"}]],o=t("square-arrow-up-right",e);export{e as __iconNode,o as default};

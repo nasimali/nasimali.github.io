@@ -1,0 +1,1 @@
+import{createLucideIcon as e}from"./index-Bqfm2T3r.js";const t=[["path",{d:"M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4",key:"1pf5j1"}],["path",{d:"M14 2v4a2 2 0 0 0 2 2h4",key:"tnqrlb"}],["path",{d:"m3 15 2 2 4-4",key:"1lhrkk"}]],c=e("file-check-2",t);export{t as __iconNode,c as default};
