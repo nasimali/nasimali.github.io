@@ -1,21 +1,42 @@
-import React from 'react';
-import * as LucideIcons from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
+import { DynamicIcon as LucideDynamicIcon, iconNames, type IconName } from 'lucide-react/dynamic';
+import type { LucideProps } from 'lucide-react';
 
-export type LucideIconName = keyof typeof LucideIcons;
+export type LucideIconName = string;
 
-interface DynamicIconProps extends LucideIcons.LucideProps {
+interface DynamicIconProps extends LucideProps {
   name: LucideIconName;
 }
 
-const DynamicIcon: React.FC<DynamicIconProps> = ({ name, ...props }) => {
-  const IconComponent = LucideIcons[name] as React.FC<LucideIcons.LucideProps>;
+const availableIcons = new Set<string>(iconNames);
 
-  if (!IconComponent) {
-    console.warn(`Icon "${name}" not found in LucideIcons. Rendering HelpCircle as fallback.`);
-    return <LucideIcons.HelpCircle {...props} />;
+function toDynamicName(iconName: string): IconName | null {
+  const normalized = iconName
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .replace(/([a-z])([0-9])/g, '$1-$2')
+    .replace(/([0-9])([a-z])/g, '$1-$2')
+    .replace(/_/g, '-')
+    .toLowerCase();
+
+  if (!availableIcons.has(normalized)) {
+    return null;
   }
 
-  return <IconComponent {...props} />;
+  return normalized as IconName;
+}
+
+const DynamicIcon = ({ name, ...props }: DynamicIconProps) => {
+  const dynamicName = toDynamicName(name);
+
+  if (!dynamicName) {
+    if (import.meta.env.DEV) {
+      console.warn(`Icon "${name}" was not found in lucide-react dynamic icon set.`);
+    }
+    return <HelpCircle {...props} />;
+  }
+
+  return <LucideDynamicIcon name={dynamicName} {...props} />;
 };
 
 export default DynamicIcon;

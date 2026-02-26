@@ -1,36 +1,37 @@
-import React from 'react';
 import DynamicIcon from '@/components/DynamicIcon';
-import { getConfigData } from '@/lib/fetchConfig.ts';
+import { Separator } from '@/components/ui/separator';
+import { getConfigData } from '@/lib/fetchConfig';
 
-const Footer: React.FC = () => {
+const Footer = () => {
   const {
     textContent: { footer },
   } = getConfigData();
-  const currentYear = new Date().getFullYear();
+
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border/40 bg-secondary/30 dark:bg-secondary/10">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} {footer.copyright}
+    <footer className="pb-10 pt-6">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Separator className="mb-6 bg-border/70" />
+        <div className="flex flex-col items-start justify-between gap-3 text-sm text-muted-foreground sm:flex-row sm:items-center">
+          <p>
+            &copy; {year} {footer.copyright}
           </p>
-          <p className="text-xs text-muted-foreground flex items-center flex-wrap justify-center sm:justify-end">
-            <span className="mr-1">{footer.builtWith}</span>
+          <p className="flex flex-wrap items-center gap-1.5">
+            <span>{footer.builtWith}</span>
             <DynamicIcon
               name="Heart"
-              className="inline h-3.5 w-3.5 text-red-500"
+              className="h-3.5 w-3.5 text-rose-500"
               aria-label={footer.heartIconAlt}
             />
-            <span className="ml-1 mr-1">{footer.tools}.</span>
-            <span className="mr-1 hidden sm:inline">|</span>
-            <span className="mr-1">{footer.fueledBy}</span>
+            <span>{footer.tools}</span>
+            <span className="mx-1">|</span>
+            <span>{footer.fueledBy}</span>
             <DynamicIcon
               name="Coffee"
-              className="inline h-3.5 w-3.5 text-amber-600 dark:text-amber-400"
+              className="h-3.5 w-3.5 text-amber-500"
               aria-label={footer.coffeeIconAlt}
             />
-            .
           </p>
         </div>
       </div>

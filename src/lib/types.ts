@@ -1,5 +1,4 @@
-import type { LucideIconName } from '@/components/DynamicIcon.tsx';
-import React from 'react';
+import type { LucideIconName } from '@/components/DynamicIcon';
 
 export interface EducationItemJson {
   id: string;
@@ -26,14 +25,6 @@ export interface ExperienceItemJson {
 export interface NavLinkItem {
   id: string;
   label: string;
-}
-
-export interface NavLinkProps {
-  item: NavLinkItem;
-  activeSection: string;
-  setActiveSection: (sectionId: string) => void;
-  onClick?: () => void;
-  children: React.ReactNode;
 }
 
 export interface ProjectItem {

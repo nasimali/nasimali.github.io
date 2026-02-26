@@ -1,0 +1,15 @@
+{
+  "hero": {
+    "snapshotDescription": "I take ownership from discovery to delivery, building software that earns trust in production and stays maintainable as it grows.",
+    "snapshotReflections": [
+      "I believe strong engineering is consistency over time: clean code, thoughtful reviews, and steady iteration."
+    ]
+  },
+  "about": {
+    "engineeringNoteTitle": "Engineering Note",
+    "quote": {
+      "text": "Programs must be written for people to read, and only incidentally for machines to execute.",
+      "author": "Harold Abelson"
+    }
+  }
+}
