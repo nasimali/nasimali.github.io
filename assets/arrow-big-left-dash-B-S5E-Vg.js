@@ -1,0 +1,1 @@
+import{createLucideIcon as t}from"./index-CkmQ5Xew.js";const e=[["path",{d:"M19 15V9",key:"1hci5f"}],["path",{d:"M15 15h-3v4l-7-7 7-7v4h3v6z",key:"16tjna"}]],a=t("arrow-big-left-dash",e);export{e as __iconNode,a as default};

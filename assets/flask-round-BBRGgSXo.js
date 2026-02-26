@@ -1,1 +1,0 @@
-import{createLucideIcon as e}from"./index-Bqfm2T3r.js";const o=[["path",{d:"M10 2v6.292a7 7 0 1 0 4 0V2",key:"1s42pc"}],["path",{d:"M5 15h14",key:"m0yey3"}],["path",{d:"M8.5 2h7",key:"csnxdl"}]],d=e("flask-round",o);export{o as __iconNode,d as default};

@@ -1,1 +1,0 @@
-import{createLucideIcon as o}from"./index-Bqfm2T3r.js";const e=[["path",{d:"m18 15-6-6-6 6",key:"153udz"}]],t=o("chevron-up",e);export{e as __iconNode,t as default};
