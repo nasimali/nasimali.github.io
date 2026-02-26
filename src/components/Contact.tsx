@@ -1,4 +1,4 @@
-import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 import { Loader2, SendHorizonal } from 'lucide-react';
@@ -33,9 +33,33 @@ const Contact = () => {
   } = getConfigData();
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [isContactInView, setIsContactInView] = useState(false);
+
+  useEffect(() => {
+    const sectionElement = sectionRef.current;
+    if (!sectionElement) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsContactInView(entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0.15,
+        rootMargin: '-18% 0px -18% 0px',
+      }
+    );
+
+    observer.observe(sectionElement);
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleFieldUpdate = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -92,7 +116,7 @@ const Contact = () => {
 
   return (
     <>
-      <section id="contact" className="py-20 md:py-24">
+      <section ref={sectionRef} id="contact" className="py-20 md:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionIntro
             eyebrow="Connect"
@@ -228,7 +252,7 @@ const Contact = () => {
         </div>
       </section>
 
-      {shouldUseRecaptcha && recaptchaSiteKey && (
+      {shouldUseRecaptcha && recaptchaSiteKey && isContactInView && (
         <div className="fixed right-4 bottom-4 z-[70]">
           <ReCAPTCHA
             ref={recaptchaRef}
