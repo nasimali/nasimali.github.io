@@ -1,0 +1,1 @@
+import{createLucideIcon as t}from"./index-BzTH8XPk.js";const e=[["path",{d:"M21 12H9",key:"dn1m92"}],["path",{d:"M21 18H7",key:"1ygte8"}],["path",{d:"M21 6H3",key:"1jwq7v"}]],a=t("align-right",e);export{e as __iconNode,a as default};

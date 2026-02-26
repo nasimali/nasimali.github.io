@@ -1,0 +1,1 @@
+import{createLucideIcon as e}from"./index-BzTH8XPk.js";const t=[["path",{d:"M6 3h12l4 6-10 13L2 9Z",key:"1pcd5k"}],["path",{d:"M11 3 8 9l4 13 4-13-3-6",key:"1fcu3u"}],["path",{d:"M2 9h20",key:"16fsjt"}]],o=e("gem",t);export{t as __iconNode,o as default};

@@ -1,0 +1,1 @@
+import{createLucideIcon as c}from"./index-BzTH8XPk.js";const e=[["path",{d:"M22 2 2 22",key:"y4kqgn"}],["circle",{cx:"12",cy:"12",r:"10",key:"1mglay"}]],r=c("circle-slash-2",e);export{e as __iconNode,r as default};
