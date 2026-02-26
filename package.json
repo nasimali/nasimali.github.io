@@ -53,6 +53,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
+    "minimatch": "^4.2.4",
     "@tailwindcss/vite": {
       "vite": "$vite"
     }
