@@ -1,98 +1,127 @@
-import React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card.tsx';
-import { Badge } from '@/components/ui/badge.tsx';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import DynamicIcon from '@/components/DynamicIcon';
-import { motion } from 'framer-motion';
-import { getConfigData } from '@/lib/fetchConfig.ts';
+import SectionIntro from '@/components/SectionIntro';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { getConfigData } from '@/lib/fetchConfig';
+import { cn } from '@/lib/utils';
 
-const Experience: React.FC = () => {
+const Experience = () => {
   const {
-    experience: experiencesData,
-    textContent: { experience: experienceSectionContent },
+    experience,
+    textContent: { experience: experienceSection },
   } = getConfigData();
 
+  const [openItemId, setOpenItemId] = useState<string | null>(experience[0]?.id ?? null);
+
+  const toggleItem = (itemId: string) => {
+    setOpenItemId((prevOpenItemId) => (prevOpenItemId === itemId ? null : itemId));
+  };
+
   return (
-    <section id="experience" className="py-16 md:py-24 scroll-mt-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="experience" className="py-20 md:py-24">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionIntro
+          eyebrow="Career"
+          heading={experienceSection.heading}
+          subheading={experienceSection.subheading}
+          align="center"
+        />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
+          transition={{ duration: 0.45, ease: 'easeOut' }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-primary-foreground">
-            {experienceSectionContent.heading}
-          </h2>
-          <p className="text-lg text-muted-foreground">{experienceSectionContent.subheading}</p>
-        </motion.div>
-        <div className="max-w-3xl mx-auto space-y-10 relative">
-          <div
-            className="absolute left-5 top-2 bottom-2 w-0.5 bg-border hidden sm:block"
-            aria-hidden="true"
-          ></div>
+          <Card className="glass-panel border-border/70 py-0">
+            <CardContent className="px-0 py-0">
+              <div className="divide-y divide-border/65">
+                {experience.map((item) => {
+                  const isOpen = openItemId === item.id;
 
-          {experiencesData.map((exp, index) => (
-            <motion.div
-              key={exp.id} // Use unique ID from JSON
-              className="relative pl-12 sm:pl-16"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.6, delay: index * 0.15, ease: 'easeOut' }}
-            >
-              {/* Icon for the timeline point */}
-              <div className="absolute left-0 top-1 sm:left-5 sm:-ml-[1.125rem] h-9 w-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center ring-8 ring-background shadow-md">
-                <DynamicIcon name={exp.iconName} className="w-5 h-5" />
-              </div>
-              <Card className="hover:shadow-lg dark:hover:shadow-primary/20 transition-shadow duration-300 border-border hover:border-primary/30">
-                <CardHeader className="pb-3">
-                  <CardTitle className="text-lg sm:text-xl">{exp.role}</CardTitle>
-                  <CardDescription className="text-sm sm:text-base">
-                    {exp.companyLink ? (
-                      <a
-                        href={exp.companyLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:underline text-primary/90 dark:text-primary-foreground/90 font-medium"
+                  return (
+                    <div key={item.id} className="px-6 sm:px-8">
+                      <button
+                        type="button"
+                        onClick={() => toggleItem(item.id)}
+                        className="flex w-full items-center gap-3 py-5 text-left"
+                        aria-expanded={isOpen}
+                        aria-controls={`experience-panel-${item.id}`}
                       >
-                        {exp.company}
-                      </a>
-                    ) : (
-                      <span className="font-medium text-foreground/80">{exp.company}</span>
-                    )}
-                    <span className="mx-1.5 text-muted-foreground">|</span> {exp.duration}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <ul className="list-disc list-outside space-y-1.5 pl-4 text-muted-foreground text-sm">
-                    {exp.descriptionPoints.map((point, i) => (
-                      <li key={i}>{point}</li>
-                    ))}
-                  </ul>
-                  {exp.skills && exp.skills.length > 0 && (
-                    <div className="mt-4">
-                      <p className="text-xs font-semibold text-foreground/70 mb-1.5">Key Skills:</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {exp.skills.map((skill) => (
-                          <Badge key={skill} variant="outline" className="text-xs">
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
+                        <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+                          <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border/60 bg-background/70">
+                            <DynamicIcon name={item.iconName} className="h-4 w-4 text-primary" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="truncate text-base font-semibold text-foreground sm:text-lg">
+                              {item.role}
+                            </p>
+                            <p className="truncate text-sm text-muted-foreground">{item.company}</p>
+                          </div>
+                        </div>
+
+                        <div className="ml-2 flex shrink-0 items-center gap-3">
+                          <span className="rounded-full border border-border/60 bg-background/70 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                            {item.duration}
+                          </span>
+                          <ChevronDown
+                            className={cn(
+                              'h-4 w-4 text-muted-foreground transition-transform duration-200',
+                              isOpen && 'rotate-180'
+                            )}
+                            aria-hidden="true"
+                          />
+                        </div>
+                      </button>
+
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            id={`experience-panel-${item.id}`}
+                            key={`content-${item.id}`}
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: 'easeOut' }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pb-5">
+                              <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+                                {item.descriptionPoints.map((point, index) => (
+                                  <li key={index} className="flex gap-2">
+                                    <span className="mt-[7px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70" />
+                                    <span>{point}</span>
+                                  </li>
+                                ))}
+                              </ul>
+
+                              {item.skills && item.skills.length > 0 && (
+                                <div className="mt-4 flex flex-wrap gap-1.5">
+                                  {item.skills.map((skill) => (
+                                    <Badge
+                                      key={skill}
+                                      variant="secondary"
+                                      className="rounded-full px-2.5 py-1 text-[11px]"
+                                    >
+                                      {skill}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </section>
   );

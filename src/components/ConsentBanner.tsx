@@ -1,57 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { getConsentCookie } from '@/lib/cookieConsentManager.ts';
+import { getConsentCookie } from '@/lib/cookieConsentManager';
 
 interface ConsentBannerProps {
   onAccept: () => void;
   onReject: () => void;
 }
 
-const ConsentBanner: React.FC<ConsentBannerProps> = ({ onAccept, onReject }) => {
-  const [visible, setVisible] = useState(false);
+const ConsentBanner = ({ onAccept, onReject }: ConsentBannerProps) => {
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const showConsentBanner = getConsentCookie() === undefined;
-    if (showConsentBanner) {
-      setVisible(true);
-    }
+    setIsVisible(getConsentCookie() === undefined);
   }, []);
 
+  if (!isVisible) {
+    return null;
+  }
+
   const handleAccept = () => {
-    localStorage.setItem('ga-consent', 'true');
-    setVisible(false);
+    setIsVisible(false);
     onAccept();
   };
 
   const handleReject = () => {
-    localStorage.setItem('ga-consent', 'false');
-    setVisible(false);
+    setIsVisible(false);
     onReject();
   };
 
-  if (!visible) return null;
-
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-full px-4">
-      <Card className="bg-gray-100 dark:bg-zinc-900 text-foreground shadow-xl border-none rounded-none w-full">
-        <CardContent className="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 px-6 w-full max-w-screen-xl mx-auto">
-          <span className="text-sm text-center sm:text-left">
-            This site uses cookies for basic analytics. You can accept or reject tracking.
-          </span>
-          <div className="flex gap-2 mt-2 sm:mt-0">
-            <Button
-              size="sm"
-              className="bg-red-600 text-white hover:bg-red-700 shadow-md cursor-pointer"
-              onClick={handleReject}
-            >
+    <div className="fixed bottom-4 left-4 right-4 z-50">
+      <Card className="mx-auto w-full max-w-3xl border-border/70 bg-background/95 py-0 shadow-2xl backdrop-blur-xl">
+        <CardContent className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            This site uses privacy-friendly analytics cookies. Choose whether to allow tracking.
+          </p>
+          <div className="flex shrink-0 items-center gap-2">
+            <Button variant="outline" size="sm" className="rounded-full" onClick={handleReject}>
               Reject
             </Button>
-            <Button
-              size="sm"
-              className="bg-blue-600 text-white hover:bg-blue-700 shadow-md cursor-pointer"
-              onClick={handleAccept}
-            >
+            <Button size="sm" className="rounded-full" onClick={handleAccept}>
               Accept
             </Button>
           </div>

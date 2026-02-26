@@ -1,49 +1,227 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Outfit:wght@300..800&display=swap');
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  a {
-    @apply text-blue-600 dark:text-blue-400 hover:underline;
-  }
+@theme {
+  --font-sans: 'Outfit', 'Avenir Next', sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius: 1rem;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 5px);
+
+  --keyframes-accordion-down: {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  };
+
+  --keyframes-accordion-up: {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  };
+
+  --keyframes-float: {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  };
+
+  --animate-accordion-down: accordion-down 0.22s ease-out;
+  --animate-accordion-up: accordion-up 0.22s ease-out;
+  --animate-float: float 11s ease-in-out infinite;
 }
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 100% 50%;
+  --background: 40 42% 98%;
+  --foreground: 214 35% 15%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 214 35% 15%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 214 35% 15%;
+
+  --primary: 187 84% 33%;
+  --primary-foreground: 180 40% 98%;
+
+  --secondary: 186 22% 93%;
+  --secondary-foreground: 212 29% 20%;
+
+  --muted: 187 18% 92%;
+  --muted-foreground: 214 16% 42%;
+
+  --accent: 186 26% 90%;
+  --accent-foreground: 212 29% 20%;
+
+  --destructive: 0 84% 60%;
   --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 222.2 84% 4.9%;
+
+  --border: 188 22% 83%;
+  --input: 188 22% 83%;
+  --ring: 187 84% 33%;
 }
 
-[data-theme='dark'],
 .dark {
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 1.2%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-  --destructive: 0 62.8% 30.6%;
+  --background: 214 42% 8%;
+  --foreground: 190 23% 95%;
+
+  --card: 214 34% 12%;
+  --card-foreground: 190 23% 95%;
+
+  --popover: 214 34% 12%;
+  --popover-foreground: 190 23% 95%;
+
+  --primary: 185 76% 58%;
+  --primary-foreground: 214 42% 8%;
+
+  --secondary: 214 20% 18%;
+  --secondary-foreground: 190 23% 95%;
+
+  --muted: 214 18% 20%;
+  --muted-foreground: 197 15% 70%;
+
+  --accent: 214 20% 20%;
+  --accent-foreground: 190 23% 95%;
+
+  --destructive: 0 64% 50%;
   --destructive-foreground: 210 40% 98%;
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 212.7 26.8% 83.9%;
+
+  --border: 214 20% 24%;
+  --input: 214 20% 24%;
+  --ring: 185 76% 58%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+
+  section {
+    scroll-margin-top: 7rem;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-card/75 backdrop-blur-sm;
+  }
+
+  .page-noise {
+    position: fixed;
+    inset: 0;
+    z-index: -30;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 5% 10%, color-mix(in oklab, hsl(var(--primary)) 18%, transparent), transparent 33%),
+      radial-gradient(circle at 94% 16%, color-mix(in oklab, hsl(var(--primary)) 11%, transparent), transparent 37%),
+      linear-gradient(180deg, color-mix(in oklab, hsl(var(--background)) 94%, #ffffff 6%), hsl(var(--background)));
+  }
+
+  .dark .page-noise {
+    background:
+      radial-gradient(circle at 6% 10%, color-mix(in oklab, hsl(var(--primary)) 20%, transparent), transparent 35%),
+      radial-gradient(circle at 92% 18%, color-mix(in oklab, #f59e0b 13%, transparent), transparent 34%),
+      linear-gradient(180deg, color-mix(in oklab, hsl(var(--background)) 96%, #000 4%), hsl(var(--background)));
+  }
+
+  .page-noise::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.24;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 0.7px, transparent 0.7px);
+    background-size: 26px 26px;
+  }
+
+  .dark .page-noise::before {
+    opacity: 0.18;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0.8px, transparent 0.8px);
+  }
+
+  .hero-orb-left,
+  .hero-orb-right {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(40px);
+    pointer-events: none;
+    opacity: 0.78;
+    animation: var(--animate-float);
+  }
+
+  .hero-orb-left {
+    top: 6%;
+    left: -5%;
+    height: 14rem;
+    width: 14rem;
+    background: color-mix(in oklab, hsl(var(--primary)) 32%, transparent);
+  }
+
+  .hero-orb-right {
+    bottom: 2%;
+    right: -3%;
+    height: 16rem;
+    width: 16rem;
+    background: color-mix(in oklab, #f59e0b 28%, transparent);
+    animation-delay: 1.4s;
+  }
+
+  .dark .hero-orb-right {
+    background: color-mix(in oklab, #60a5fa 20%, transparent);
+  }
 }

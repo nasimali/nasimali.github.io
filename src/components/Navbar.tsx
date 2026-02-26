@@ -1,148 +1,127 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, Moon, Sun, X } from 'lucide-react';
-import { Button } from '@/components/ui/button.tsx';
-import type { NavLinkItem, NavLinkProps } from '@/lib/types.ts';
-import { getConfigData } from '@/lib/fetchConfig.ts';
-
-const NavLink: React.FC<NavLinkProps> = ({
-  item,
-  activeSection,
-  setActiveSection,
-  children,
-  onClick,
-}) => (
-  <a
-    href={`#${item.id}`}
-    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors block sm:inline-block w-full text-left sm:w-auto sm:text-center
-      ${
-        activeSection === item.id
-          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300'
-          : 'text-gray-500 hover:text-black hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800'
-      }`}
-    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      setActiveSection(item.id);
-      const element = document.getElementById(item.id);
-      if (element) {
-        const navbarHeight = (document.querySelector('nav')?.offsetHeight || 64) + 16;
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - navbarHeight;
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth',
-        });
-      }
-      if (onClick) onClick();
-    }}
-  >
-    {children}
-  </a>
-);
+import { useEffect, useState } from 'react';
+import { Menu, MoonStar, SunMedium } from 'lucide-react';
+import { getConfigData } from '@/lib/fetchConfig';
+import { scrollToSection } from '@/lib/scroll';
+import type { NavLinkItem } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 interface NavbarProps {
-  darkMode: boolean;
-  toggleDarkMode: () => void;
+  isDark: boolean;
+  toggleTheme: () => void;
   activeSection: string;
   setActiveSection: (sectionId: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({
-  darkMode,
-  toggleDarkMode,
-  activeSection,
-  setActiveSection,
-}) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const Navbar = ({ isDark, toggleTheme, activeSection, setActiveSection }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const {
     textContent: { siteName, navLinks },
   } = getConfigData();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 14);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768 && mobileMenuOpen) {
-        setMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [mobileMenuOpen]);
+  const handleNavigation = (sectionId: string) => {
+    setActiveSection(sectionId);
+    scrollToSection(sectionId);
+    setIsMobileMenuOpen(false);
+  };
+
+  const navButtonClass = (itemId: string) =>
+    cn(
+      'h-9 rounded-full px-4 text-sm font-medium transition-all duration-200',
+      activeSection === itemId
+        ? 'bg-primary text-primary-foreground shadow-sm'
+        : 'text-muted-foreground hover:bg-accent/70 hover:text-foreground'
+    );
+
+  const navItems = (itemsClassName?: string) =>
+    navLinks.map((item: NavLinkItem) => (
+      <Button
+        key={item.id}
+        variant="ghost"
+        className={cn(navButtonClass(item.id), itemsClassName)}
+        onClick={() => handleNavigation(item.id)}
+      >
+        {item.label}
+      </Button>
+    ));
 
   return (
     <nav
-      className={`fixed top-0 z-50 w-full transition-all duration-300 
-      ${
-        isScrolled || mobileMenuOpen
-          ? 'bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-md border-b border-border/40 dark:bg-background/80 dark:border-border/30'
-          : 'bg-transparent border-b border-transparent dark:border-transparent'
-      }`}
+      className={cn(
+        'fixed top-0 z-50 w-full border-b transition-all duration-300',
+        isScrolled
+          ? 'border-border/80 bg-background/85 backdrop-blur-xl'
+          : 'border-transparent bg-background/30 backdrop-blur-sm'
+      )}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-        <p className="text-2xl font-bold text-primary transition-colors dark:text-primary">
+      <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Button
+          variant="ghost"
+          className="font-display h-auto rounded-full px-3 py-2 text-xl tracking-tight text-foreground hover:bg-accent/60"
+          onClick={() => handleNavigation('home')}
+        >
           {siteName}
-        </p>
-        <div className="hidden md:flex items-center space-x-1">
-          {navLinks.map((item: NavLinkItem) => (
-            <NavLink
-              key={item.id}
-              item={item}
-              activeSection={activeSection}
-              setActiveSection={setActiveSection}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+        </Button>
+
+        <div className="hidden items-center gap-1 rounded-full border border-border/60 bg-background/80 p-1 md:flex">
+          {navItems()}
         </div>
-        <div className="flex items-center">
+
+        <div className="flex items-center gap-2">
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
-            onClick={toggleDarkMode}
+            onClick={toggleTheme}
             aria-label="Toggle dark mode"
-            className="text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground"
+            className="rounded-full border-border/70 bg-background/80"
           >
-            {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {isDark ? <SunMedium className="h-4 w-4" /> : <MoonStar className="h-4 w-4" />}
           </Button>
-          <div className="md:hidden ml-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Open menu"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground"
+
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="rounded-full border-border/70 bg-background/80 md:hidden"
+                aria-label="Open navigation menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-[84vw] border-border/80 bg-background/95 sm:w-[400px]"
             >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
-          </div>
+              <SheetHeader>
+                <SheetTitle className="font-display text-2xl tracking-tight">{siteName}</SheetTitle>
+                <SheetDescription>Navigate between sections.</SheetDescription>
+              </SheetHeader>
+              <Separator className="bg-border/70" />
+              <div className="space-y-2 px-6 pb-8">
+                {navItems('w-full justify-start rounded-xl text-base')}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg border-t border-border/40 dark:bg-background/80 dark:border-border/30">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navLinks.map((item: NavLinkItem) => (
-              <NavLink
-                key={item.id}
-                item={item}
-                activeSection={activeSection}
-                setActiveSection={setActiveSection}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
-        </div>
-      )}
     </nav>
   );
 };

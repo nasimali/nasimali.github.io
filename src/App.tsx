@@ -1,124 +1,109 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import ReactGAFunctions from 'react-ga4';
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
 import About from '@/components/About';
-import Skills from '@/components/Skills';
-import Projects from '@/components/Projects';
-import Experience from '@/components/Experience';
-import Education from '@/components/Education';
+import ConsentBanner from '@/components/ConsentBanner';
 import Contact from '@/components/Contact';
+import Education from '@/components/Education';
+import Experience from '@/components/Experience';
 import Footer from '@/components/Footer';
-import { getConfigData } from '@/lib/fetchConfig.ts';
-import '@/App.css';
-import ConsentBanner from '@/components/ConsentBanner.tsx';
-import { devLog } from '@/lib/devLogger.ts';
-import { getConsentCookie, setConsentCookie } from '@/lib/cookieConsentManager.ts';
+import Hero from '@/components/Hero';
+import Navbar from '@/components/Navbar';
+import Projects from '@/components/Projects';
+import Skills from '@/components/Skills';
+import { useActiveSection } from '@/hooks/use-active-section';
+import { useTheme } from '@/hooks/use-theme';
+import { setConsentCookie, getConsentCookie } from '@/lib/cookieConsentManager';
+import { getConfigData } from '@/lib/fetchConfig';
 
-const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
 const ReactGA = ReactGAFunctions;
+const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID as string | undefined;
 
-const App: React.FC = () => {
-  const { textContent } = getConfigData();
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    const savedMode = localStorage.getItem('darkMode');
-    if (savedMode) return JSON.parse(savedMode);
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
-  const [activeSection, setActiveSection] = useState<string>('home');
+const App = () => {
+  const {
+    textContent: { metaDescription, navLinks, siteName, siteTitleFull },
+  } = getConfigData();
 
-  // Update document title and meta description dynamically
-  useEffect(() => {
-    document.title = textContent.siteTitleFull;
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', textContent.metaDescription);
+  const sectionIds = useMemo(() => navLinks.map((link) => link.id), [navLinks]);
+  const sectionLabelById = useMemo(
+    () => new Map(navLinks.map((link) => [link.id, link.label])),
+    [navLinks]
+  );
+
+  const { activeSection, setActiveSection } = useActiveSection(sectionIds);
+  const { isDark, toggleTheme } = useTheme();
+
+  const isAnalyticsInitialized = useRef(false);
+
+  const initializeAnalytics = () => {
+    if (isAnalyticsInitialized.current || !GA_TRACKING_ID) {
+      return;
     }
-    const consent = getConsentCookie();
-    if (consent === 'true') {
-      ReactGA.initialize(GA_TRACKING_ID);
-    }
-  }, []);
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('darkMode', JSON.stringify(true));
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('darkMode', JSON.stringify(false));
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => {
-    setDarkMode((prevMode) => !prevMode);
+    ReactGA.initialize(GA_TRACKING_ID);
+    isAnalyticsInitialized.current = true;
   };
 
   useEffect(() => {
-    const sections = document.querySelectorAll<HTMLElement>('section[id]');
+    document.title = siteTitleFull;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let mostVisible: IntersectionObserverEntry | null = null;
+    const descriptionTag = document.querySelector('meta[name="description"]');
+    if (descriptionTag) {
+      descriptionTag.setAttribute('content', metaDescription);
+    }
 
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (!mostVisible || entry.intersectionRatio > mostVisible.intersectionRatio) {
-              mostVisible = entry;
-            }
-          }
-        });
+    if (getConsentCookie() === 'true') {
+      initializeAnalytics();
+    }
+  }, [metaDescription, siteTitleFull]);
 
-        if (mostVisible) {
-          const target = (mostVisible as IntersectionObserverEntry).target as HTMLElement;
-          setActiveSection(target.id);
-          document.title = target.id === 'home' ? textContent.siteTitleFull : target.id;
-          const consent = getConsentCookie();
-          if (consent === 'true' && ReactGA) {
-            ReactGA.send({ hitType: 'pageview', page: target.id });
-          }
-        }
-      },
-      {
-        threshold: 0.6,
-      }
-    );
+  useEffect(() => {
+    if (!activeSection) {
+      return;
+    }
 
-    sections.forEach((section) => observer.observe(section));
+    const isHome = activeSection === 'home';
+    const currentSectionLabel = sectionLabelById.get(activeSection) ?? activeSection;
+    document.title = isHome ? siteTitleFull : `${siteName} | ${currentSectionLabel}`;
 
-    return () => observer.disconnect();
-  }, []);
+    if (getConsentCookie() === 'true') {
+      initializeAnalytics();
+      ReactGA.send({
+        hitType: 'pageview',
+        page: `/${activeSection}`,
+        title: currentSectionLabel,
+      });
+    }
+  }, [activeSection, sectionLabelById, siteName, siteTitleFull]);
 
   return (
-    <div
-      className={`min-h-screen font-sans transition-colors duration-300 selection:bg-primary/70 selection:text-primary-foreground
-    ${darkMode ? 'dark' : ''} bg-background text-foreground`}
-    >
+    <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
+      <div className="page-noise" />
       <Navbar
-        darkMode={darkMode}
-        toggleDarkMode={toggleDarkMode}
+        isDark={isDark}
+        toggleTheme={toggleTheme}
         activeSection={activeSection}
         setActiveSection={setActiveSection}
       />
-      <main className="overflow-x-hidden pt-16">
+
+      <main>
         <Hero />
-        <Suspense fallback={<div className="text-center py-10">Loading...</div>}>
-          <About />
-          <Skills />
-          <Projects />
-          <Experience />
-          <Education />
-          <Contact />
-          <Footer />
-        </Suspense>
+        <About />
+        <Skills />
+        <Projects />
+        <Experience />
+        <Education />
+        <Contact />
       </main>
+
+      <Footer />
+
       <ConsentBanner
         onAccept={() => {
           setConsentCookie(true);
-          ReactGA.initialize(GA_TRACKING_ID);
+          initializeAnalytics();
         }}
         onReject={() => {
-          devLog('Analytics tracking was rejected by the user.');
+          setConsentCookie(false);
         }}
       />
     </div>

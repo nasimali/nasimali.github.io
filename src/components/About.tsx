@@ -1,73 +1,92 @@
-import React from 'react';
-import DynamicIcon from '@/components/DynamicIcon';
 import { motion } from 'framer-motion';
-import { getConfigData } from '@/lib/fetchConfig.ts';
+import { Quote } from 'lucide-react';
+import SectionIntro from '@/components/SectionIntro';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { getConfigData } from '@/lib/fetchConfig';
 
-const About: React.FC = () => {
+const About = () => {
   const {
+    uiProps,
     textContent: { about },
   } = getConfigData();
 
   return (
-    <section
-      id="about"
-      className="py-16 md:py-24 bg-secondary/30 dark:bg-secondary/10 rounded-none sm:rounded-xl scroll-mt-16"
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary dark:text-primary-foreground">
-            {about.heading}
-          </h2>
-          <p className="text-lg text-muted-foreground">{about.subheading}</p>
-        </motion.div>
-        <div className="grid md:grid-cols-5 gap-8 md:gap-12 items-center max-w-6xl mx-auto">
+    <section id="about" className="py-20 md:py-24">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionIntro
+          eyebrow="About"
+          heading={about.heading}
+          subheading={about.subheading}
+          align="center"
+        />
+
+        <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
-            className="md:col-span-2 relative group"
+            transition={{ duration: 0.55, ease: 'easeOut' }}
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur-md opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
-            <img
-              src={about.imageSrc}
-              alt={about.imageAlt}
-              width={865}
-              height={1300}
-              className="rounded-lg shadow-xl w-full h-auto relative object-cover"
-              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                e.currentTarget.src =
-                  'https://placehold.co/600x750/333333/FFFFFF?text=Image+Not+Found';
-              }}
-            />
+            <Card className="glass-panel overflow-hidden border-border/70 py-0">
+              <div className="relative">
+                <img
+                  src={about.imageSrc}
+                  alt={about.imageAlt}
+                  width={865}
+                  height={1300}
+                  className="aspect-[4/5] w-full object-cover"
+                  onError={(event) => {
+                    event.currentTarget.src =
+                      'https://placehold.co/600x750/111827/E5E7EB?text=Image+Unavailable';
+                  }}
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+              </div>
+            </Card>
           </motion.div>
+
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 22 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}
-            className="md:col-span-3 space-y-6"
+            transition={{ duration: 0.55, delay: 0.08, ease: 'easeOut' }}
+            className="space-y-5"
           >
-            <DynamicIcon name="UserCheck" className="w-12 h-12 text-primary mb-4" />
-            <h3 className="text-2xl font-semibold text-foreground">{about.philosophyTitle}</h3>
-            <p className="text-lg text-foreground/90 leading-relaxed">
-              <span className="font-semibold">{about.greeting}</span> {about.bioParagraphs[0]}
-            </p>
-            {about.bioParagraphs.slice(1).map((paragraph: string, index: number) => (
-              <p key={index} className="text-lg text-foreground/90 leading-relaxed">
-                {paragraph}
+            <Badge
+              variant="secondary"
+              className="rounded-full px-3 py-1 text-xs tracking-[0.12em] uppercase"
+            >
+              {about.philosophyTitle}
+            </Badge>
+
+            <Card className="glass-panel border-border/70 py-0">
+              <CardContent className="space-y-5 px-6 py-6 sm:px-7 sm:py-7">
+                <p className="text-base leading-relaxed text-foreground">
+                  <span className="font-semibold text-primary">{about.greeting}</span>
+                </p>
+                {about.bioParagraphs.map((paragraph, index) => (
+                  <p key={index} className="text-base leading-relaxed text-muted-foreground">
+                    {paragraph}
+                  </p>
+                ))}
+              </CardContent>
+            </Card>
+
+            <div className="rounded-2xl border border-border/70 bg-background/65 p-5">
+              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                <Quote className="h-4 w-4 text-primary" />
+                {uiProps.about.engineeringNoteTitle}
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                "{uiProps.about.quote.text}" - {uiProps.about.quote.author}
               </p>
-            ))}
+            </div>
           </motion.div>
         </div>
       </div>
     </section>
   );
 };
+
 export default About;

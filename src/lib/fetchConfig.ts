@@ -1,6 +1,8 @@
-import type { EducationItemJson, ExperienceItemJson, ProjectItem, SkillItem } from './types.ts';
+import type { EducationItemJson, ExperienceItemJson, ProjectItem, SkillItem } from '@/lib/types';
 
-const CONFIG_BASE = 'https://raw.githubusercontent.com/nasimali/nasim-dev-config/main/data';
+const DEFAULT_CONFIG_BASE = 'https://raw.githubusercontent.com/nasimali/nasim-dev-config/main/data';
+const CONFIG_BASE =
+  (import.meta.env.VITE_CONFIG_BASE_URL as string | undefined)?.trim() || DEFAULT_CONFIG_BASE;
 
 export interface SiteTextContent {
   siteName: string;
@@ -15,6 +17,20 @@ export interface SiteTextContent {
   education: SectionHeading;
   contact: ContactSection;
   footer: FooterSection;
+}
+
+export interface UiPropsContent {
+  hero: {
+    snapshotDescription: string;
+    snapshotReflections: string[];
+  };
+  about: {
+    engineeringNoteTitle: string;
+    quote: {
+      text: string;
+      author: string;
+    };
+  };
 }
 
 interface NavLink {
@@ -86,6 +102,7 @@ interface FooterSection {
 
 export interface ConfigData {
   textContent: SiteTextContent;
+  uiProps: UiPropsContent;
   skills: SkillItem[];
   experience: ExperienceItemJson[];
   education: EducationItemJson[];
@@ -94,6 +111,7 @@ export interface ConfigData {
 
 const endpoints = {
   textContent: `${CONFIG_BASE}/textContent.json`,
+  uiProps: '/Props.json',
   skills: `${CONFIG_BASE}/skills.json`,
   experience: `${CONFIG_BASE}/experience.json`,
   education: `${CONFIG_BASE}/education.json`,
@@ -101,28 +119,67 @@ const endpoints = {
 };
 
 let configData: ConfigData | null = null;
+let loadPromise: Promise<ConfigData> | null = null;
+
+async function fetchWithTimeout<T>(url: string, timeoutMs = 10000): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+    }
+
+    return (await response.json()) as T;
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Request timeout for ${url} after ${timeoutMs}ms`);
+    }
+
+    throw error;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
 
 export async function loadConfigData(): Promise<ConfigData> {
-  try {
-    const [textContent, skills, experience, education, projects] = await Promise.all([
-      fetch(endpoints.textContent).then((res) => res.json()),
-      fetch(endpoints.skills).then((res) => res.json()),
-      fetch(endpoints.experience).then((res) => res.json()),
-      fetch(endpoints.education).then((res) => res.json()),
-      fetch(endpoints.projects).then((res) => res.json()),
-    ]);
-
-    configData = { textContent, skills, experience, education, projects };
+  if (configData) {
     return configData;
-  } catch (err) {
-    console.error('Failed to load config data:', err);
-    throw err;
   }
+
+  if (loadPromise) {
+    return loadPromise;
+  }
+
+  loadPromise = Promise.all([
+    fetchWithTimeout<SiteTextContent>(endpoints.textContent),
+    fetchWithTimeout<UiPropsContent>(endpoints.uiProps),
+    fetchWithTimeout<SkillItem[]>(endpoints.skills),
+    fetchWithTimeout<ExperienceItemJson[]>(endpoints.experience),
+    fetchWithTimeout<EducationItemJson[]>(endpoints.education),
+    fetchWithTimeout<ProjectItem[]>(endpoints.projects),
+  ])
+    .then(([textContent, uiProps, skills, experience, education, projects]) => {
+      configData = { textContent, uiProps, skills, experience, education, projects };
+      return configData;
+    })
+    .catch((error) => {
+      console.error('Failed to load config data:', error);
+      throw error;
+    })
+    .finally(() => {
+      loadPromise = null;
+    });
+
+  return loadPromise;
 }
 
 export function getConfigData(): ConfigData {
   if (!configData) {
-    throw new Error('Config data has not been loaded. Call loadConfigData() first.');
+    throw new Error('Config data is not loaded yet. Call loadConfigData() before rendering.');
   }
+
   return configData;
 }
