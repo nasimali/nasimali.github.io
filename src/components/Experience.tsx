@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -30,11 +30,11 @@ const Experience = () => {
           align="center"
         />
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <Card className="glass-panel border-border/70 py-0">
             <CardContent className="px-0 py-0">
@@ -79,13 +79,13 @@ const Experience = () => {
 
                       <AnimatePresence initial={false}>
                         {isOpen && (
-                          <motion.div
+                          <m.div
                             id={`experience-panel-${item.id}`}
                             key={`content-${item.id}`}
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2, ease: 'easeOut' }}
+                            transition={{ duration: 0.35, ease: 'easeOut' }}
                             className="overflow-hidden"
                           >
                             <div className="pb-5">
@@ -112,7 +112,7 @@ const Experience = () => {
                                 </div>
                               )}
                             </div>
-                          </motion.div>
+                          </m.div>
                         )}
                       </AnimatePresence>
                     </div>
@@ -121,7 +121,7 @@ const Experience = () => {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useConfigData } from '@/contexts/ConfigContext';
 import type { SkillItem } from '@/lib/types';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 interface SkillTab {
   value: string;
@@ -89,12 +89,12 @@ const Skills = () => {
             <TabsContent key={tab.value} value={tab.value}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {tab.skills.map((skill, index) => (
-                  <motion.div
+                  <m.div
                     key={skill.id}
                     initial={{ opacity: 0, y: 12 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.15 }}
-                    transition={{ duration: 0.35, delay: index * 0.03, ease: 'easeOut' }}
+                    transition={{ duration: 0.5, delay: index * 0.04, ease: 'easeOut' }}
                     className="h-full"
                   >
                     <Card className="glass-panel h-full border-border/70 py-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-xl">
@@ -120,7 +120,7 @@ const Skills = () => {
                         </Badge>
                       </CardContent>
                     </Card>
-                  </motion.div>
+                  </m.div>
                 ))}
               </div>
             </TabsContent>

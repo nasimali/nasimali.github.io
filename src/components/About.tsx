@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { optimizeGitHubImageUrl } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Quote } from 'lucide-react';
 
 const About = () => {
@@ -23,11 +23,11 @@ const About = () => {
         />
 
         <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 22 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.55, ease: 'easeOut' }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
           >
             <Card className="glass-panel overflow-hidden border-border/70 py-0">
               <div className="relative">
@@ -47,9 +47,9 @@ const About = () => {
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent" />
               </div>
             </Card>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 22 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
@@ -85,7 +85,7 @@ const About = () => {
                 "{uiProps.about.quote.text}" - {uiProps.about.quote.author}
               </p>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

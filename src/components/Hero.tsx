@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { scrollToSection } from '@/lib/scroll';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 const Hero = () => {
@@ -36,10 +36,10 @@ const Hero = () => {
       </div>
 
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-[1.12fr_0.88fr] lg:gap-14 lg:px-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.75, ease: 'easeOut' }}
           className="space-y-7"
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-xs font-semibold tracking-[0.15em] uppercase text-primary">
@@ -97,12 +97,12 @@ const Hero = () => {
               </Button>
             ))}
           </div>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.65, ease: 'easeOut' }}
+          transition={{ delay: 0.12, duration: 0.8, ease: 'easeOut' }}
         >
           <Card className="glass-panel border-border/70 py-0 shadow-2xl">
             <CardHeader className="space-y-3 border-b border-border/70 pb-5 pt-6">
@@ -142,7 +142,7 @@ const Hero = () => {
               </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

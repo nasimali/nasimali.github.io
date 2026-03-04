@@ -1,22 +1,31 @@
-import About from '@/components/About';
 import ConsentBanner from '@/components/ConsentBanner';
-import Contact from '@/components/Contact';
-import Education from '@/components/Education';
-import Experience from '@/components/Experience';
 import Footer from '@/components/Footer';
 import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
-import Projects from '@/components/Projects';
-import Skills from '@/components/Skills';
 import { ConfigProvider, useConfigContext } from '@/contexts/ConfigContext';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { useTheme } from '@/hooks/use-theme';
 import { getConsentCookie, setConsentCookie } from '@/lib/cookieConsentManager';
-import { useEffect, useMemo, useRef } from 'react';
+import { domMax, LazyMotion } from 'framer-motion';
+import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
 import ReactGAFunctions from 'react-ga4';
+
+// Lazy load non-critical sections
+const About = lazy(() => import('@/components/About'));
+const Skills = lazy(() => import('@/components/Skills'));
+const Projects = lazy(() => import('@/components/Projects'));
+const Experience = lazy(() => import('@/components/Experience'));
+const Education = lazy(() => import('@/components/Education'));
+const Contact = lazy(() => import('@/components/Contact'));
 
 const ReactGA = ReactGAFunctions;
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID as string | undefined;
+
+const SectionLoader = () => (
+  <div className="flex h-48 w-full items-center justify-center">
+    <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground border-t-primary" />
+  </div>
+);
 
 const AppContent = () => {
   const { config, isLoading, error } = useConfigContext();
@@ -106,37 +115,41 @@ const AppContent = () => {
   }, [activeSection, sectionLabelById, siteName, siteTitleFull]);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-      <div className="page-noise" />
-      <Navbar
-        isDark={isDark}
-        toggleTheme={toggleTheme}
-        activeSection={activeSection}
-        setActiveSection={setActiveSection}
-      />
+    <LazyMotion features={domMax} strict>
+      <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
+        <div className="page-noise" />
+        <Navbar
+          isDark={isDark}
+          toggleTheme={toggleTheme}
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+        />
 
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
-      </main>
+        <main>
+          <Hero />
+          <Suspense fallback={<SectionLoader />}>
+            <About />
+            <Skills />
+            <Projects />
+            <Experience />
+            <Education />
+            <Contact />
+          </Suspense>
+        </main>
 
-      <Footer />
+        <Footer />
 
-      <ConsentBanner
-        onAccept={() => {
-          setConsentCookie(true);
-          initializeAnalytics();
-        }}
-        onReject={() => {
-          setConsentCookie(false);
-        }}
-      />
-    </div>
+        <ConsentBanner
+          onAccept={() => {
+            setConsentCookie(true);
+            initializeAnalytics();
+          }}
+          onReject={() => {
+            setConsentCookie(false);
+          }}
+        />
+      </div>
+    </LazyMotion>
   );
 };
 

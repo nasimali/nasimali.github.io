@@ -13,7 +13,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { optimizeGitHubImageUrl } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { ExternalLink, GithubIcon } from 'lucide-react';
 
 const Projects = () => {
@@ -35,11 +35,11 @@ const Projects = () => {
         />
 
         {featuredProject && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.45, ease: 'easeOut' }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
             className="mb-8"
           >
             <Card className="glass-panel overflow-hidden border-border/70 py-0">
@@ -116,20 +116,20 @@ const Projects = () => {
                 </div>
               </div>
             </Card>
-          </motion.div>
+          </m.div>
         )}
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {projectList.map((project, index) => (
-            <motion.div
+            <m.div
               key={project.id}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: index * 0.05, ease: 'easeOut' }}
+              transition={{ duration: 0.55, delay: index * 0.06, ease: 'easeOut' }}
               className="h-full"
             >
-              <Card className="glass-panel h-full border-border/70 py-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-xl">
+              <Card className="glass-panel h-full gap-0 border-border/70 py-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-xl">
                 <CardHeader className="gap-3 border-b border-border/60 pb-4 pt-5">
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 rounded-xl border border-border/60 bg-background/70 p-2">
@@ -182,7 +182,7 @@ const Projects = () => {
                   )}
                 </CardFooter>
               </Card>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

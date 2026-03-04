@@ -7,15 +7,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { useConfigData } from '@/contexts/ConfigContext';
 import type { SocialLink } from '@/lib/types';
 import emailjs from '@emailjs/browser';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { Loader2, SendHorizonal } from 'lucide-react';
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
+interface ActionState {
+  status: 'success' | 'error' | null;
+  message?: string;
 }
 
 const Contact = () => {
@@ -34,9 +33,7 @@ const Contact = () => {
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [formData, setFormData] = useState<FormData>({ name: '', email: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null);
   const [isContactInView, setIsContactInView] = useState(false);
 
   useEffect(() => {
@@ -62,22 +59,14 @@ const Contact = () => {
     return () => observer.disconnect();
   }, []);
 
-  const handleFieldUpdate = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const contactAction = async (
+    _prevState: ActionState,
+    formData: FormData
+  ): Promise<ActionState> => {
     if (!serviceId || !templateId || !publicKey) {
       console.error('EmailJS environment variables are not fully configured.');
-      setSubmitStatus('error');
-      return;
+      return { status: 'error' };
     }
-
-    setIsSubmitting(true);
-    setSubmitStatus(null);
 
     try {
       let recaptchaToken: string | undefined;
@@ -87,33 +76,37 @@ const Contact = () => {
         recaptchaRef.current?.reset();
 
         if (!token) {
-          setSubmitStatus('error');
-          setIsSubmitting(false);
-          return;
+          return { status: 'error' };
         }
 
         recaptchaToken = token;
       }
 
+      const name = formData.get('name') as string;
+      const email = formData.get('email') as string;
+      const message = formData.get('message') as string;
+
       await emailjs.send(
         serviceId,
         templateId,
         {
-          ...formData,
+          name,
+          email,
+          message,
           ...(recaptchaToken ? { 'g-recaptcha-response': recaptchaToken } : {}),
         },
         { publicKey }
       );
 
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      formRef.current?.reset();
+      return { status: 'success' };
     } catch (error) {
       console.error('Unable to submit contact form:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
+      return { status: 'error' };
     }
   };
+
+  const [state, formAction, isPending] = useActionState(contactAction, { status: null });
 
   return (
     <>
@@ -127,11 +120,11 @@ const Contact = () => {
           />
 
           <div className="grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.45, ease: 'easeOut' }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
             >
               <Card className="glass-panel border-border/70 py-0">
                 <CardHeader className="space-y-2 border-b border-border/65 pb-5 pt-6">
@@ -141,7 +134,7 @@ const Contact = () => {
                   <CardDescription>{contact.formCardDescription}</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6 pb-6">
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form ref={formRef} action={formAction} className="space-y-4">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium text-foreground">
                         {contact.labels.name}
@@ -150,8 +143,6 @@ const Contact = () => {
                         id="name"
                         name="name"
                         autoComplete="name"
-                        value={formData.name}
-                        onChange={handleFieldUpdate}
                         placeholder={contact.placeholders.name}
                         required
                       />
@@ -166,8 +157,6 @@ const Contact = () => {
                         type="email"
                         name="email"
                         autoComplete="email"
-                        value={formData.email}
-                        onChange={handleFieldUpdate}
                         placeholder={contact.placeholders.email}
                         required
                       />
@@ -180,29 +169,27 @@ const Contact = () => {
                       <Textarea
                         id="message"
                         name="message"
-                        value={formData.message}
-                        onChange={handleFieldUpdate}
                         placeholder={contact.placeholders.message}
                         rows={6}
                         required
                       />
                     </div>
 
-                    <Button type="submit" className="w-full rounded-full" disabled={isSubmitting}>
-                      {isSubmitting ? (
+                    <Button type="submit" className="w-full rounded-full" disabled={isPending}>
+                      {isPending ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
                       ) : (
                         <SendHorizonal className="h-4 w-4" />
                       )}
-                      {isSubmitting ? contact.labels.submitting : contact.labels.submit}
+                      {isPending ? contact.labels.submitting : contact.labels.submit}
                     </Button>
 
-                    {submitStatus === 'success' && (
+                    {state.status === 'success' && (
                       <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300">
                         {contact.successMessage}
                       </p>
                     )}
-                    {submitStatus === 'error' && (
+                    {state.status === 'error' && (
                       <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-700 dark:text-rose-300">
                         {contact.errorMessage}
                       </p>
@@ -210,13 +197,13 @@ const Contact = () => {
                   </form>
                 </CardContent>
               </Card>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.45, delay: 0.07, ease: 'easeOut' }}
+              transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
               className="space-y-5"
             >
               <Card className="glass-panel border-border/70 py-0">
@@ -248,7 +235,7 @@ const Contact = () => {
                   ))}
                 </CardContent>
               </Card>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>

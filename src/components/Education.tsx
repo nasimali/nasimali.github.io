@@ -3,7 +3,7 @@ import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const Education = () => {
   const {
@@ -23,15 +23,15 @@ const Education = () => {
 
         <div className="grid gap-5 md:grid-cols-2">
           {education.map((item, index) => (
-            <motion.div
+            <m.div
               key={item.id}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: index * 0.05, ease: 'easeOut' }}
+              transition={{ duration: 0.55, delay: index * 0.06, ease: 'easeOut' }}
               className="h-full"
             >
-              <Card className="glass-panel h-full border-border/70 py-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-xl">
+              <Card className="glass-panel h-full gap-0 border-border/70 py-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-xl">
                 <CardHeader className="space-y-3 border-b border-border/60 pb-4 pt-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-3">
@@ -83,7 +83,7 @@ const Education = () => {
                   )}
                 </CardContent>
               </Card>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>
