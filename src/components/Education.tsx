@@ -3,7 +3,7 @@ import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
-import { m } from 'framer-motion';
+import * as m from 'framer-motion/m';
 
 const Education = () => {
   const {

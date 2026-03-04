@@ -13,7 +13,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { optimizeGitHubImageUrl } from '@/lib/utils';
-import { m } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { ExternalLink, GithubIcon } from 'lucide-react';
 
 const Projects = () => {

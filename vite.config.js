@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import compression from 'vite-plugin-compression';
 import Inspect from 'vite-plugin-inspect';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
   plugins: [
@@ -16,6 +17,12 @@ export default defineConfig({
       deleteOriginFile: false,
     }),
     Inspect(),
+    visualizer({
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      filename: 'dist/stats.html',
+    }),
   ],
   build: {
     chunkSizeWarningLimit: 2000,

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { scrollToSection } from '@/lib/scroll';
-import { m } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 const Hero = () => {

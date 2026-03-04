@@ -4,7 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 

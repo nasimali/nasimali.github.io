@@ -6,11 +6,9 @@ import { ConfigProvider, useConfigContext } from '@/contexts/ConfigContext';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { useTheme } from '@/hooks/use-theme';
 import { getConsentCookie, setConsentCookie } from '@/lib/cookieConsentManager';
-import { domMax, LazyMotion } from 'framer-motion';
+import { domAnimation, LazyMotion } from 'framer-motion';
 import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
-import ReactGAFunctions from 'react-ga4';
 
-// Lazy load non-critical sections
 const About = lazy(() => import('@/components/About'));
 const Skills = lazy(() => import('@/components/Skills'));
 const Projects = lazy(() => import('@/components/Projects'));
@@ -18,7 +16,6 @@ const Experience = lazy(() => import('@/components/Experience'));
 const Education = lazy(() => import('@/components/Education'));
 const Contact = lazy(() => import('@/components/Contact'));
 
-const ReactGA = ReactGAFunctions;
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID as string | undefined;
 
 const SectionLoader = () => (
@@ -72,14 +69,26 @@ const AppContent = () => {
   const { isDark, toggleTheme } = useTheme();
 
   const isAnalyticsInitialized = useRef(false);
+  const reactGAModulePromise = useRef<Promise<typeof import('react-ga4')> | null>(null);
 
-  const initializeAnalytics = () => {
-    if (isAnalyticsInitialized.current || !GA_TRACKING_ID) {
-      return;
+  const loadReactGA = async () => {
+    if (!reactGAModulePromise.current) {
+      reactGAModulePromise.current = import('react-ga4');
     }
 
+    const module = await reactGAModulePromise.current;
+    return module.default;
+  };
+
+  const initializeAnalytics = async () => {
+    if (isAnalyticsInitialized.current || !GA_TRACKING_ID) {
+      return null;
+    }
+
+    const ReactGA = await loadReactGA();
     ReactGA.initialize(GA_TRACKING_ID);
     isAnalyticsInitialized.current = true;
+    return ReactGA;
   };
 
   useEffect(() => {
@@ -90,8 +99,8 @@ const AppContent = () => {
       descriptionTag.setAttribute('content', metaDescription);
     }
 
-    if (getConsentCookie() === 'true') {
-      initializeAnalytics();
+    if (getConsentCookie() === 'true' && GA_TRACKING_ID) {
+      void initializeAnalytics();
     }
   }, [metaDescription, siteTitleFull]);
 
@@ -104,18 +113,20 @@ const AppContent = () => {
     const currentSectionLabel = sectionLabelById.get(activeSection) ?? activeSection;
     document.title = isHome ? siteTitleFull : `${siteName} | ${currentSectionLabel}`;
 
-    if (getConsentCookie() === 'true') {
-      initializeAnalytics();
-      ReactGA.send({
-        hitType: 'pageview',
-        page: `/${activeSection}`,
-        title: currentSectionLabel,
-      });
+    if (getConsentCookie() === 'true' && GA_TRACKING_ID) {
+      void (async () => {
+        const ReactGA = (await initializeAnalytics()) ?? (await loadReactGA());
+        ReactGA.send({
+          hitType: 'pageview',
+          page: `/${activeSection}`,
+          title: currentSectionLabel,
+        });
+      })();
     }
   }, [activeSection, sectionLabelById, siteName, siteTitleFull]);
 
   return (
-    <LazyMotion features={domMax} strict>
+    <LazyMotion features={domAnimation} strict>
       <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
         <div className="page-noise" />
         <Navbar
@@ -142,7 +153,9 @@ const AppContent = () => {
         <ConsentBanner
           onAccept={() => {
             setConsentCookie(true);
-            initializeAnalytics();
+            if (GA_TRACKING_ID) {
+              void initializeAnalytics();
+            }
           }}
           onReject={() => {
             setConsentCookie(false);

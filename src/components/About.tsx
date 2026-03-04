@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { optimizeGitHubImageUrl } from '@/lib/utils';
-import { m } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { Quote } from 'lucide-react';
 
 const About = () => {

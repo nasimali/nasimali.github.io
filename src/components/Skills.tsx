@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useConfigData } from '@/contexts/ConfigContext';
 import type { SkillItem } from '@/lib/types';
-import { m } from 'framer-motion';
+import * as m from 'framer-motion/m';
 
 interface SkillTab {
   value: string;

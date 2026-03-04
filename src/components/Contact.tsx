@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useConfigData } from '@/contexts/ConfigContext';
 import type { SocialLink } from '@/lib/types';
 import emailjs from '@emailjs/browser';
-import { m } from 'framer-motion';
+import * as m from 'framer-motion/m';
 import { Loader2, SendHorizonal } from 'lucide-react';
 import { useActionState, useEffect, useRef, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
