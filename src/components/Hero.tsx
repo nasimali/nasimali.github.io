@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
 import DynamicIcon, { type LucideIconName } from '@/components/DynamicIcon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
 import { scrollToSection } from '@/lib/scroll';
+import { motion } from 'framer-motion';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 const Hero = () => {
   const {
@@ -13,7 +13,7 @@ const Hero = () => {
     experience,
     uiProps,
     textContent: { hero, contact, navLinks },
-  } = getConfigData();
+  } = useConfigData();
 
   const navLabelById = new Map(navLinks.map((link) => [link.id, link.label]));
   const snapshotStats = [

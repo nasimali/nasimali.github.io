@@ -1,6 +1,6 @@
-import { HelpCircle } from 'lucide-react';
-import { DynamicIcon as LucideDynamicIcon, iconNames, type IconName } from 'lucide-react/dynamic';
+import { iconRegistry, type RegisteredIconName } from '@/lib/iconRegistry';
 import type { LucideProps } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 
 export type LucideIconName = string;
 
@@ -8,35 +8,25 @@ interface DynamicIconProps extends LucideProps {
   name: LucideIconName;
 }
 
-const availableIcons = new Set<string>(iconNames);
-
-function toDynamicName(iconName: string): IconName | null {
-  const normalized = iconName
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
-    .replace(/([a-z])([0-9])/g, '$1-$2')
-    .replace(/([0-9])([a-z])/g, '$1-$2')
-    .replace(/_/g, '-')
-    .toLowerCase();
-
-  if (!availableIcons.has(normalized)) {
-    return null;
-  }
-
-  return normalized as IconName;
-}
-
+/**
+ * DynamicIcon component - Renders Lucide icons dynamically by name
+ *
+ * Uses a pre-defined icon registry for optimal tree-shaking and performance.
+ * Falls back to HelpCircle if icon is not found in registry.
+ *
+ * @param name - Icon name from config (PascalCase, e.g., "Github", "Coffee")
+ * @param props - Lucide icon props (size, color, className, etc.)
+ */
 const DynamicIcon = ({ name, ...props }: DynamicIconProps) => {
-  const dynamicName = toDynamicName(name);
+  const IconComponent = iconRegistry[name as RegisteredIconName] ?? HelpCircle;
 
-  if (!dynamicName) {
-    if (import.meta.env.DEV) {
-      console.warn(`Icon "${name}" was not found in lucide-react dynamic icon set.`);
-    }
-    return <HelpCircle {...props} />;
+  if (!iconRegistry[name as RegisteredIconName] && import.meta.env.DEV) {
+    console.warn(
+      `Icon "${name}" not found in registry. Add it to /src/lib/iconRegistry.ts. Falling back to HelpCircle.`
+    );
   }
 
-  return <LucideDynamicIcon name={dynamicName} {...props} />;
+  return <IconComponent {...props} />;
 };
 
 export default DynamicIcon;

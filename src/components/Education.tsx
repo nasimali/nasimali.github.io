@@ -1,15 +1,15 @@
-import { motion } from 'framer-motion';
 import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
+import { motion } from 'framer-motion';
 
 const Education = () => {
   const {
     education,
     textContent: { education: educationSection },
-  } = getConfigData();
+  } = useConfigData();
 
   return (
     <section id="education" className="py-20 md:py-24">

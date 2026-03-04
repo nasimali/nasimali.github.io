@@ -1,11 +1,11 @@
 import DynamicIcon from '@/components/DynamicIcon';
 import { Separator } from '@/components/ui/separator';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
 
 const Footer = () => {
   const {
     textContent: { footer },
-  } = getConfigData();
+  } = useConfigData();
 
   const year = new Date().getFullYear();
 

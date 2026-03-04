@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
 import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
 import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+import { useState } from 'react';
 
 const Experience = () => {
   const {
     experience,
     textContent: { experience: experienceSection },
-  } = getConfigData();
+  } = useConfigData();
 
   const [openItemId, setOpenItemId] = useState<string | null>(experience[0]?.id ?? null);
 
@@ -92,7 +92,7 @@ const Experience = () => {
                               <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
                                 {item.descriptionPoints.map((point, index) => (
                                   <li key={index} className="flex gap-2">
-                                    <span className="mt-[7px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70" />
+                                    <span className="mt-1.75 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70" />
                                     <span>{point}</span>
                                   </li>
                                 ))}

@@ -1,9 +1,3 @@
-import { useEffect, useState } from 'react';
-import { Menu, MoonStar, SunMedium } from 'lucide-react';
-import { getConfigData } from '@/lib/fetchConfig';
-import { scrollToSection } from '@/lib/scroll';
-import type { NavLinkItem } from '@/lib/types';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -14,6 +8,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { useConfigData } from '@/contexts/ConfigContext';
+import { scrollToSection } from '@/lib/scroll';
+import type { NavLinkItem } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { Menu, MoonStar, SunMedium } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface NavbarProps {
   isDark: boolean;
@@ -28,7 +28,7 @@ const Navbar = ({ isDark, toggleTheme, activeSection, setActiveSection }: Navbar
 
   const {
     textContent: { siteName, navLinks },
-  } = getConfigData();
+  } = useConfigData();
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 14);
@@ -108,7 +108,7 @@ const Navbar = ({ isDark, toggleTheme, activeSection, setActiveSection }: Navbar
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-[84vw] border-border/80 bg-background/95 sm:w-[400px]"
+              className="w-[84vw] border-border/80 bg-background/95 sm:w-100"
             >
               <SheetHeader>
                 <SheetTitle className="font-display text-2xl tracking-tight">{siteName}</SheetTitle>

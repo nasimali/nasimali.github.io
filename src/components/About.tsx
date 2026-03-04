@@ -1,15 +1,16 @@
-import { motion } from 'framer-motion';
-import { Quote } from 'lucide-react';
 import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
+import { optimizeGitHubImageUrl } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { Quote } from 'lucide-react';
 
 const About = () => {
   const {
     uiProps,
     textContent: { about },
-  } = getConfigData();
+  } = useConfigData();
 
   return (
     <section id="about" className="py-20 md:py-24">
@@ -31,17 +32,19 @@ const About = () => {
             <Card className="glass-panel overflow-hidden border-border/70 py-0">
               <div className="relative">
                 <img
-                  src={about.imageSrc}
+                  src={optimizeGitHubImageUrl(about.imageSrc)}
                   alt={about.imageAlt}
                   width={865}
                   height={1300}
-                  className="aspect-[4/5] w-full object-cover"
+                  className="aspect-4/5 w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                   onError={(event) => {
                     event.currentTarget.src =
                       'https://placehold.co/600x750/111827/E5E7EB?text=Image+Unavailable';
                   }}
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent" />
               </div>
             </Card>
           </motion.div>

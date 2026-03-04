@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
-import emailjs from '@emailjs/browser';
-import { motion } from 'framer-motion';
-import { Loader2, SendHorizonal } from 'lucide-react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import DynamicIcon, { type LucideIconName } from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
 import type { SocialLink } from '@/lib/types';
+import emailjs from '@emailjs/browser';
+import { motion } from 'framer-motion';
+import { Loader2, SendHorizonal } from 'lucide-react';
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface FormData {
   name: string;
@@ -30,7 +30,7 @@ const Contact = () => {
 
   const {
     textContent: { contact },
-  } = getConfigData();
+  } = useConfigData();
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -254,7 +254,7 @@ const Contact = () => {
       </section>
 
       {shouldUseRecaptcha && recaptchaSiteKey && isContactInView && (
-        <div className="fixed right-4 bottom-4 z-[70]">
+        <div className="fixed right-4 bottom-4 z-70">
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={recaptchaSiteKey}

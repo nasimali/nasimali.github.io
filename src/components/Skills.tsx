@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
 import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getConfigData } from '@/lib/fetchConfig';
+import { useConfigData } from '@/contexts/ConfigContext';
 import type { SkillItem } from '@/lib/types';
+import { motion } from 'framer-motion';
 
 interface SkillTab {
   value: string;
@@ -58,7 +58,7 @@ const Skills = () => {
   const {
     skills: skillsData,
     textContent: { skills: skillsSection },
-  } = getConfigData();
+  } = useConfigData();
 
   const tabs = buildTabs(skillsData);
 
