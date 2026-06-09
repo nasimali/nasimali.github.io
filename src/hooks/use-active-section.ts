@@ -5,6 +5,12 @@ function getSectionProbeOffset() {
   return navHeight + window.innerHeight * 0.26;
 }
 
+function getTrackedSections(sectionIds: string[]) {
+  return sectionIds
+    .map((id) => document.getElementById(id))
+    .filter((section): section is HTMLElement => section !== null);
+}
+
 export function useActiveSection(sectionIds: string[]) {
   const [activeSection, setActiveSection] = useState<string>(sectionIds[0] ?? 'home');
 
@@ -13,18 +19,21 @@ export function useActiveSection(sectionIds: string[]) {
       return;
     }
 
-    const sections = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => section !== null);
-
-    if (sections.length === 0) {
-      return;
-    }
-
     let isTicking = false;
+    let hasObservedAllSections = false;
 
     const updateActiveSection = () => {
       isTicking = false;
+      const sections = getTrackedSections(sectionIds);
+
+      if (sections.length === 0) {
+        return;
+      }
+
+      if (!hasObservedAllSections && sections.length === sectionIds.length) {
+        hasObservedAllSections = true;
+        mutationObserver.disconnect();
+      }
 
       const probeY = window.scrollY + getSectionProbeOffset();
       const pageBottom = window.scrollY + window.innerHeight;
@@ -57,7 +66,7 @@ export function useActiveSection(sectionIds: string[]) {
       setActiveSection((prev) => (prev === nextActiveSection ? prev : nextActiveSection));
     };
 
-    const handleScrollOrResize = () => {
+    const scheduleUpdate = () => {
       if (isTicking) {
         return;
       }
@@ -66,14 +75,22 @@ export function useActiveSection(sectionIds: string[]) {
       window.requestAnimationFrame(updateActiveSection);
     };
 
+    const mutationObserver = new MutationObserver(() => {
+      scheduleUpdate();
+    });
+
+    const observedRoot = document.querySelector('main') ?? document.body;
+    mutationObserver.observe(observedRoot, { childList: true, subtree: true });
+
     updateActiveSection();
 
-    window.addEventListener('scroll', handleScrollOrResize, { passive: true });
-    window.addEventListener('resize', handleScrollOrResize);
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
 
     return () => {
-      window.removeEventListener('scroll', handleScrollOrResize);
-      window.removeEventListener('resize', handleScrollOrResize);
+      mutationObserver.disconnect();
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
     };
   }, [sectionIds]);
 
