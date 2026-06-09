@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-oxc';
+import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import compression from 'vite-plugin-compression';
 import Inspect from 'vite-plugin-inspect';
 import { visualizer } from 'rollup-plugin-visualizer';
@@ -10,7 +9,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    tsconfigPaths(),
     compression({
       algorithm: 'brotliCompress',
       ext: '.br',
@@ -24,6 +22,9 @@ export default defineConfig({
       filename: 'dist/stats.html',
     }),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
   build: {
     chunkSizeWarningLimit: 2000,
     target: 'es2020',

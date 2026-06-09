@@ -18,13 +18,13 @@ import {
   FileJson,
   FileJson2,
   Gamepad2,
-  GithubIcon,
+  GitFork,
   // Config icons - Education
   GraduationCap,
   Heart,
   HelpCircle,
   Laptop,
-  LinkedinIcon,
+  Link2,
   ListTodo,
   // Component icons - UI
   Loader2,
@@ -64,7 +64,7 @@ export const iconRegistry = {
   Code,
   Container,
   Settings2,
-  Github: GithubIcon, // Using GithubIcon (recommended over deprecated Github)
+  Github: GitFork,
   Activity,
   TestTube2,
   ListTodo,
@@ -90,7 +90,7 @@ export const iconRegistry = {
 
   // Config icons - Contact/Social
   Mail,
-  Linkedin: LinkedinIcon, // Using LinkedinIcon (recommended over deprecated Linkedin)
+  Linkedin: Link2,
 
   // Component icons - UI
   Loader2,
