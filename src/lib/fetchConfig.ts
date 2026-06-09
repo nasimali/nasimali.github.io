@@ -135,11 +135,10 @@ async function fetchWithTimeout<T>(url: string, timeoutMs = 10000): Promise<T> {
     return (await response.json()) as T;
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
-      const timeoutError = new Error(`Request timeout for ${url} after ${timeoutMs}ms`) as Error & {
-        cause?: unknown;
-      };
-      timeoutError.cause = error;
-      throw timeoutError;
+      throw Object.assign(
+        new Error(`Request timeout for ${url} after ${timeoutMs}ms`),
+        { cause: error }
+      );
     }
 
     throw error;
