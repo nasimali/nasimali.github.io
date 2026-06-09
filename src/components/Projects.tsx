@@ -14,7 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { optimizeGitHubImageUrl } from '@/lib/utils';
 import * as m from 'framer-motion/m';
-import { ExternalLink, GithubIcon } from 'lucide-react';
+import { ExternalLink, GitFork } from 'lucide-react';
 
 const Projects = () => {
   const {
@@ -107,7 +107,7 @@ const Projects = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <GithubIcon className="h-4 w-4" />
+                          <GitFork className="h-4 w-4" />
                           View Source
                         </a>
                       </Button>
@@ -175,7 +175,7 @@ const Projects = () => {
                   {project.repoLink && (
                     <Button variant="outline" size="sm" className="rounded-full" asChild>
                       <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                        <GithubIcon className="h-3.5 w-3.5" />
+                        <GitFork className="h-3.5 w-3.5" />
                         Code
                       </a>
                     </Button>
