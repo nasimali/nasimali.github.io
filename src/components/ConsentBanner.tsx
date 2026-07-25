@@ -31,17 +31,23 @@ const ConsentBanner = ({ onAccept, onReject }: ConsentBannerProps) => {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50">
-      <Card className="mx-auto w-full max-w-3xl border-border/70 bg-background/95 py-0 shadow-2xl backdrop-blur-xl">
+      <Card className="term-window mx-auto w-full max-w-3xl rounded-lg bg-background/95 py-0 backdrop-blur-xl">
         <CardContent className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            This site uses privacy-friendly analytics cookies. Choose whether to allow tracking.
+          <p className="font-mono text-sm leading-relaxed text-muted-foreground">
+            <span className="text-term-amber">$ cookies</span> — privacy-friendly analytics only.
+            Allow tracking?
           </p>
           <div className="flex shrink-0 items-center gap-2">
-            <Button variant="outline" size="sm" className="rounded-full" onClick={handleReject}>
-              Reject
+            <Button
+              variant="outline"
+              size="sm"
+              className="font-mono text-xs"
+              onClick={handleReject}
+            >
+              [n] reject
             </Button>
-            <Button size="sm" className="rounded-full" onClick={handleAccept}>
-              Accept
+            <Button size="sm" className="font-mono text-xs" onClick={handleAccept}>
+              [y] accept
             </Button>
           </div>
         </CardContent>

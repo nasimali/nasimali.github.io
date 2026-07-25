@@ -1,7 +1,7 @@
 import DynamicIcon, { type LucideIconName } from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
+import TerminalWindow from '@/components/TerminalWindow';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useConfigData } from '@/contexts/ConfigContext';
@@ -108,95 +108,99 @@ const Contact = () => {
 
   const [state, formAction, isPending] = useActionState(contactAction, { status: null });
 
+  const fieldLabelClass = 'font-mono text-xs font-bold text-foreground';
+  const flagClass = 'text-term-amber';
+
   return (
     <>
       <section ref={sectionRef} id="contact" className="py-20 md:py-24">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionIntro
-            eyebrow="Connect"
+            eyebrow="./send-message --to=nasim"
             heading={contact.heading}
             subheading={contact.subheading}
-            align="center"
           />
 
-          <div className="grid items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[1.05fr_0.95fr]">
             <m.div
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
             >
-              <Card className="glass-panel border-border/70 py-0">
-                <CardHeader className="space-y-2 border-b border-border/65 pb-5 pt-6">
-                  <CardTitle className="font-display text-2xl tracking-tight">
+              <TerminalWindow title="mail — compose" contentClassName="space-y-1">
+                <div className="mb-4 space-y-1">
+                  <p className="font-mono text-sm font-bold text-foreground">
                     {contact.formCardTitle}
-                  </CardTitle>
-                  <CardDescription>{contact.formCardDescription}</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 pb-6">
-                  <form ref={formRef} action={formAction} className="space-y-4">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium text-foreground">
-                        {contact.labels.name}
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        autoComplete="name"
-                        placeholder={contact.placeholders.name}
-                        required
-                      />
-                    </div>
+                  </p>
+                  <p className="code-comment text-xs">{contact.formCardDescription}</p>
+                </div>
 
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium text-foreground">
-                        {contact.labels.email}
-                      </label>
-                      <Input
-                        id="email"
-                        type="email"
-                        name="email"
-                        autoComplete="email"
-                        placeholder={contact.placeholders.email}
-                        required
-                      />
-                    </div>
+                <form ref={formRef} action={formAction} className="space-y-4">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className={fieldLabelClass}>
+                      <span className={flagClass}>--name</span> {contact.labels.name}
+                    </label>
+                    <Input
+                      id="name"
+                      name="name"
+                      autoComplete="name"
+                      placeholder={contact.placeholders.name}
+                      required
+                      className="rounded-md font-mono text-sm"
+                    />
+                  </div>
 
-                    <div className="space-y-2">
-                      <label htmlFor="message" className="text-sm font-medium text-foreground">
-                        {contact.labels.message}
-                      </label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        placeholder={contact.placeholders.message}
-                        rows={6}
-                        required
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <label htmlFor="email" className={fieldLabelClass}>
+                      <span className={flagClass}>--email</span> {contact.labels.email}
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      placeholder={contact.placeholders.email}
+                      required
+                      className="rounded-md font-mono text-sm"
+                    />
+                  </div>
 
-                    <Button type="submit" className="w-full rounded-full" disabled={isPending}>
-                      {isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <SendHorizonal className="h-4 w-4" />
-                      )}
-                      {isPending ? contact.labels.submitting : contact.labels.submit}
-                    </Button>
+                  <div className="space-y-2">
+                    <label htmlFor="message" className={fieldLabelClass}>
+                      <span className={flagClass}>--message</span> {contact.labels.message}
+                    </label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      placeholder={contact.placeholders.message}
+                      rows={6}
+                      required
+                      className="rounded-md font-mono text-sm"
+                    />
+                  </div>
 
-                    {state.status === 'success' && (
-                      <p className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300">
-                        {contact.successMessage}
-                      </p>
+                  <Button type="submit" className="w-full font-mono font-bold" disabled={isPending}>
+                    {isPending ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <SendHorizonal className="size-4" />
                     )}
-                    {state.status === 'error' && (
-                      <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-sm text-rose-700 dark:text-rose-300">
-                        {contact.errorMessage}
-                      </p>
-                    )}
-                  </form>
-                </CardContent>
-              </Card>
+                    {isPending ? contact.labels.submitting : `$ ${contact.labels.submit}`}
+                  </Button>
+
+                  {state.status === 'success' && (
+                    <p className="rounded-md border border-term-green/40 bg-term-green/10 px-3 py-2 font-mono text-sm text-term-green">
+                      ✓ exit 0 — {contact.successMessage}
+                    </p>
+                  )}
+                  {state.status === 'error' && (
+                    <p className="rounded-md border border-term-red/40 bg-term-red/10 px-3 py-2 font-mono text-sm text-term-red">
+                      ✗ exit 1 — {contact.errorMessage}
+                    </p>
+                  )}
+                </form>
+              </TerminalWindow>
             </m.div>
 
             <m.div
@@ -206,35 +210,45 @@ const Contact = () => {
               transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
               className="space-y-5"
             >
-              <Card className="glass-panel border-border/70 py-0">
-                <CardHeader className="border-b border-border/65 pb-4 pt-6">
-                  <CardTitle className="font-display text-2xl tracking-tight">
+              <TerminalWindow title="ssh — known hosts" contentClassName="space-y-4">
+                <div className="space-y-1">
+                  <p className="font-mono text-sm font-bold text-foreground">
                     {contact.socialPrompt}
-                  </CardTitle>
-                  <CardDescription>{contact.hostName}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3 pt-5 pb-6">
+                  </p>
+                  <p className="code-comment text-xs">{contact.hostName}</p>
+                </div>
+
+                <div className="space-y-2.5">
                   {contact.socialLinks.map((link: SocialLink) => (
                     <a
                       key={link.id}
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-between rounded-xl border border-border/60 bg-background/65 px-4 py-3 transition-all hover:border-primary/40 hover:bg-background"
+                      className="group flex cursor-pointer items-center justify-between rounded-md border bg-background/60 px-4 py-3 transition-all hover:border-primary hover:bg-accent/50"
                       aria-label={link.label}
                     >
-                      <span className="flex items-center gap-2.5 text-sm font-medium text-foreground">
+                      <span className="flex items-center gap-2.5 font-mono text-sm font-medium text-foreground">
                         <DynamicIcon
                           name={link.iconName as LucideIconName}
-                          className="h-4 w-4 text-primary"
+                          className="size-4 text-primary"
                         />
-                        {link.label}
+                        ssh {link.label.toLowerCase()}
                       </span>
-                      <span className="text-xs text-muted-foreground">Open</span>
+                      <span
+                        aria-hidden="true"
+                        className="font-mono text-xs text-muted-foreground transition-transform group-hover:translate-x-0.5"
+                      >
+                        →
+                      </span>
                     </a>
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+
+                <p className="cursor-block border-t border-dashed pt-4 font-mono text-xs text-muted-foreground">
+                  connection ready
+                </p>
+              </TerminalWindow>
             </m.div>
           </div>
         </div>

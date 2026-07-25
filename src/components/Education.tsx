@@ -1,7 +1,5 @@
 import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import * as m from 'framer-motion/m';
 
@@ -15,76 +13,81 @@ const Education = () => {
     <section id="education" className="py-20 md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
-          eyebrow="Learning"
+          eyebrow="tree ~/education"
           heading={educationSection.heading}
           subheading={educationSection.subheading}
-          align="center"
         />
 
-        <div className="grid gap-5 md:grid-cols-2">
-          {education.map((item, index) => (
-            <m.div
-              key={item.id}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.55, delay: index * 0.06, ease: 'easeOut' }}
-              className="h-full"
-            >
-              <Card className="glass-panel h-full gap-0 border-border/70 py-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-xl">
-                <CardHeader className="space-y-3 border-b border-border/60 pb-4 pt-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-start gap-3">
-                      <div className="mt-0.5 rounded-xl border border-border/60 bg-background/70 p-2">
-                        <DynamicIcon name={item.iconName} className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-lg leading-tight tracking-tight">
-                          {item.degree}
-                        </CardTitle>
-                        <CardDescription className="mt-1 text-sm">
-                          {item.institutionLink ? (
-                            <a
-                              href={item.institutionLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-primary hover:underline"
-                            >
-                              {item.institution}
-                            </a>
-                          ) : (
-                            item.institution
-                          )}
-                        </CardDescription>
-                      </div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {education.map((item, index) => {
+            const isLast = index === education.length - 1;
+
+            return (
+              <m.div
+                key={item.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.05, ease: 'easeOut' }}
+                className="h-full"
+              >
+                <div className="retro-card flex h-full flex-col gap-4 p-5 sm:p-6">
+                  <div className="flex items-start gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="mt-1 shrink-0 font-mono text-sm font-bold text-muted-foreground"
+                    >
+                      {isLast ? '└──' : '├──'}
+                    </span>
+                    <div className="mt-0.5 rounded-md border bg-secondary/60 p-2">
+                      <DynamicIcon name={item.iconName} className="size-5 text-primary" />
                     </div>
-                    <span className="shrink-0 rounded-full border border-border/60 bg-background/70 px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                    <div className="min-w-0">
+                      <h3 className="font-mono text-sm leading-snug font-bold text-foreground sm:text-base">
+                        {item.degree}
+                      </h3>
+                      <p className="mt-1 text-sm">
+                        {item.institutionLink ? (
+                          <a
+                            href={item.institutionLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-xs text-primary underline-offset-4 hover:underline"
+                          >
+                            {item.institution} ↗
+                          </a>
+                        ) : (
+                          <span className="font-mono text-xs text-muted-foreground">
+                            {item.institution}
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                    <span className="ml-auto shrink-0 rounded-sm border bg-background/70 px-2 py-1 font-mono text-[10px] font-medium text-muted-foreground">
                       {item.duration}
                     </span>
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4 pt-4 pb-5">
+
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {item.description}
                   </p>
 
                   {item.highlights && item.highlights.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
+                    <ul className="mt-auto space-y-1.5 border-t border-dashed pt-4 font-mono text-xs leading-relaxed text-muted-foreground">
                       {item.highlights.map((highlight) => (
-                        <Badge
-                          key={highlight}
-                          variant="outline"
-                          className="rounded-full px-2.5 py-1 text-[11px]"
-                        >
-                          {highlight}
-                        </Badge>
+                        <li key={highlight} className="flex gap-2">
+                          <span aria-hidden="true" className="font-bold text-term-green">
+                            [x]
+                          </span>
+                          <span>{highlight}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   )}
-                </CardContent>
-              </Card>
-            </m.div>
-          ))}
+                </div>
+              </m.div>
+            );
+          })}
         </div>
       </div>
     </section>

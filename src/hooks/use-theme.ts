@@ -18,6 +18,11 @@ function getInitialTheme(): Theme {
     return 'light';
   }
 
+  const urlTheme = new URLSearchParams(window.location.search).get('theme');
+  if (urlTheme === 'light' || urlTheme === 'dark') {
+    return urlTheme;
+  }
+
   const savedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
   if (savedTheme === 'light' || savedTheme === 'dark') {
     return savedTheme;
