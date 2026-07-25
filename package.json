@@ -1,6 +1,6 @@
 {
   "name": "nasimali.github.io",
-  "version": "3.0",
+  "version": "4.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
