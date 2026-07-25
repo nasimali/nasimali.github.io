@@ -2,19 +2,10 @@ import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { optimizeGitHubImageUrl } from '@/lib/utils';
 import * as m from 'framer-motion/m';
-import { ExternalLink, GitFork } from 'lucide-react';
+import { ExternalLink, GitFork, Star } from 'lucide-react';
 
 const Projects = () => {
   const {
@@ -28,10 +19,9 @@ const Projects = () => {
     <section id="projects" className="py-20 md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
-          eyebrow="Work"
+          eyebrow="ls ~/projects --featured"
           heading={projectsSection.heading}
           subheading={projectsSection.subheading}
-          align="center"
         />
 
         {featuredProject && (
@@ -42,10 +32,22 @@ const Projects = () => {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="mb-8"
           >
-            <Card className="glass-panel overflow-hidden border-border/70 py-0">
-              <div className="grid gap-0 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="term-window">
+              <div className="term-titlebar">
+                <span className="flex items-center gap-1.5" aria-hidden="true">
+                  <span className="term-dot term-dot-red" />
+                  <span className="term-dot term-dot-amber" />
+                  <span className="term-dot term-dot-green" />
+                </span>
+                <span className="mx-auto flex items-center gap-1.5 truncate pr-12 font-mono text-xs text-muted-foreground">
+                  <Star className="size-3 text-term-amber" />
+                  {featuredProject.id}.sh — featured
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 gap-0 lg:grid-cols-[1.05fr_0.95fr]">
                 {featuredProject.imageUrl ? (
-                  <div className="relative h-full min-h-70 overflow-hidden">
+                  <div className="relative h-full min-h-70 overflow-hidden border-b lg:border-b-0 lg:border-r">
                     <img
                       src={optimizeGitHubImageUrl(featuredProject.imageUrl)}
                       alt={`${featuredProject.title} preview`}
@@ -54,134 +56,144 @@ const Projects = () => {
                       decoding="async"
                       onError={(event) => {
                         event.currentTarget.src =
-                          'https://placehold.co/900x600/111827/E5E7EB?text=Preview+Unavailable';
+                          'https://placehold.co/900x600/1a1915/f0eee6?text=Preview+Unavailable';
                       }}
                     />
-                    <div className="pointer-events-none absolute inset-0 bg-linear-to-tr from-black/45 via-black/0 to-black/10" />
                   </div>
                 ) : (
                   <div className="hidden lg:block" />
                 )}
 
                 <div className="p-6 sm:p-8">
-                  <div className="mb-4 flex items-center gap-2 text-xs font-semibold tracking-[0.12em] uppercase text-primary">
-                    Featured Project
-                  </div>
-                  <h3 className="font-display text-3xl leading-tight tracking-tight text-foreground">
+                  <p className="shell-prompt mb-3 font-mono text-xs font-bold text-term-green">
+                    ./run --featured
+                  </p>
+                  <h3 className="font-mono text-2xl leading-tight font-bold tracking-tight text-foreground">
                     {featuredProject.title}
                   </h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{featuredProject.category}</p>
-                  <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+                  <p className="code-comment mt-1.5 text-xs">{featuredProject.category}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                     {featuredProject.description}
                   </p>
 
-                  <div className="mt-6 flex flex-wrap gap-2">
+                  <div className="mt-5 flex flex-wrap gap-1.5">
                     {featuredProject.tags.map((tag) => (
                       <Badge
                         key={tag}
                         variant="secondary"
-                        className="rounded-full px-2.5 py-1 text-xs"
+                        className="rounded-sm font-mono text-[11px] lowercase"
                       >
                         {tag}
                       </Badge>
                     ))}
                   </div>
 
-                  <div className="mt-7 flex flex-wrap gap-2">
+                  <div className="mt-6 flex flex-wrap gap-2">
                     {featuredProject.liveLink && featuredProject.liveLink !== '#' && (
-                      <Button asChild className="rounded-full px-5">
+                      <Button asChild className="font-mono">
                         <a
                           href={featuredProject.liveLink}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <ExternalLink className="h-4 w-4" />
-                          Visit Live
+                          <ExternalLink className="size-4" />
+                          open --live
                         </a>
                       </Button>
                     )}
                     {featuredProject.repoLink && (
-                      <Button variant="outline" asChild className="rounded-full px-5">
+                      <Button variant="outline" asChild className="font-mono">
                         <a
                           href={featuredProject.repoLink}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <GitFork className="h-4 w-4" />
-                          View Source
+                          <GitFork className="size-4" />
+                          git clone
                         </a>
                       </Button>
                     )}
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
           </m.div>
         )}
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {projectList.map((project, index) => (
             <m.div
               key={project.id}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.55, delay: index * 0.06, ease: 'easeOut' }}
+              transition={{ duration: 0.5, delay: index * 0.05, ease: 'easeOut' }}
               className="h-full"
             >
-              <Card className="glass-panel h-full gap-0 border-border/70 py-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-xl">
-                <CardHeader className="gap-3 border-b border-border/60 pb-4 pt-5">
+              <div className="retro-card flex h-full flex-col overflow-hidden p-0">
+                <div className="term-titlebar">
+                  <span className="flex items-center gap-1.5" aria-hidden="true">
+                    <span className="term-dot term-dot-red" />
+                    <span className="term-dot term-dot-amber" />
+                    <span className="term-dot term-dot-green" />
+                  </span>
+                  <span className="mx-auto truncate pr-12 font-mono text-xs text-muted-foreground">
+                    {project.id}.sh
+                  </span>
+                </div>
+
+                <div className="flex flex-1 flex-col gap-4 p-5">
                   <div className="flex items-start gap-3">
-                    <div className="mt-0.5 rounded-xl border border-border/60 bg-background/70 p-2">
+                    <div className="mt-0.5 rounded-md border bg-secondary/60 p-2">
                       <DynamicIcon
                         name={project.iconName}
-                        className={`h-5 w-5 ${project.iconColor}`}
+                        className={`size-5 ${project.iconColor}`}
                       />
                     </div>
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg tracking-tight">{project.title}</CardTitle>
-                      <CardDescription>{project.category}</CardDescription>
+                    <div className="min-w-0 space-y-1">
+                      <h3 className="font-mono text-sm leading-snug font-bold text-foreground">
+                        {project.title}
+                      </h3>
+                      <p className="code-comment text-[11px]">{project.category}</p>
                     </div>
                   </div>
-                </CardHeader>
 
-                <CardContent className="space-y-4 pt-4 pb-4">
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {project.description}
                   </p>
-                  <Separator className="bg-border/60" />
-                  <div className="flex flex-wrap gap-1.5">
+
+                  <div className="mt-auto flex flex-wrap gap-1.5 border-t border-dashed pt-4">
                     {project.tags.map((tag) => (
                       <Badge
                         key={tag}
                         variant="outline"
-                        className="rounded-full px-2.5 py-1 text-[11px]"
+                        className="rounded-sm font-mono text-[10px] lowercase"
                       >
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                </CardContent>
 
-                <CardFooter className="mt-auto flex gap-2 border-t border-border/60 pt-4 pb-5">
-                  {project.liveLink && project.liveLink !== '#' && (
-                    <Button variant="secondary" size="sm" className="rounded-full" asChild>
-                      <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-3.5 w-3.5" />
-                        Live
-                      </a>
-                    </Button>
-                  )}
-                  {project.repoLink && (
-                    <Button variant="outline" size="sm" className="rounded-full" asChild>
-                      <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
-                        <GitFork className="h-3.5 w-3.5" />
-                        Code
-                      </a>
-                    </Button>
-                  )}
-                </CardFooter>
-              </Card>
+                  <div className="flex gap-2">
+                    {project.liveLink && project.liveLink !== '#' && (
+                      <Button variant="secondary" size="sm" className="font-mono text-xs" asChild>
+                        <a href={project.liveLink} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="size-3.5" />
+                          live
+                        </a>
+                      </Button>
+                    )}
+                    {project.repoLink && (
+                      <Button variant="outline" size="sm" className="font-mono text-xs" asChild>
+                        <a href={project.repoLink} target="_blank" rel="noopener noreferrer">
+                          <GitFork className="size-3.5" />
+                          clone
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </div>
             </m.div>
           ))}
         </div>

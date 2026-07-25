@@ -6,15 +6,18 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   build:
-    name: 🔧 Build and Lint
+    name: 🔧 Build, Test and Lint
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: true
       matrix:
-        node-version: [18, 20, 24]
+        node-version: [26]
 
     steps:
       - name: ⬇️ Checkout code
@@ -32,7 +35,7 @@ jobs:
           cache: 'pnpm'
 
       - name: 📦 Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: 🔍 Check for vulnerable dependencies
         run: pnpm audit --audit-level=moderate
@@ -43,8 +46,8 @@ jobs:
       - name: 🧹 Lint code with ESLint
         run: pnpm lint
 
+      - name: 🧪 Run unit tests
+        run: pnpm test --if-present
+
       - name: ⚙️ Build project
         run: pnpm build
-
-      # - name: 🧪 Run tests (optional)
-      #   run: pnpm test

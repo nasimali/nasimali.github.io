@@ -1,13 +1,22 @@
 import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
+import TerminalWindow from '@/components/TerminalWindow';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { useConfigData } from '@/contexts/ConfigContext';
 import { cn } from '@/lib/utils';
 import { AnimatePresence } from 'framer-motion';
 import * as m from 'framer-motion/m';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+
+/** Deterministic 7-char pseudo commit hash so entries look like `git log` output. */
+const commitHash = (seed: string) => {
+  let hash = 0;
+  for (const char of seed) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }
+  return hash.toString(16).padStart(7, '0').slice(0, 7);
+};
 
 const Experience = () => {
   const {
@@ -25,103 +34,127 @@ const Experience = () => {
     <section id="experience" className="py-20 md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
-          eyebrow="Career"
+          eyebrow="git log --oneline --career"
           heading={experienceSection.heading}
           subheading={experienceSection.subheading}
-          align="center"
         />
 
         <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
-          <Card className="glass-panel border-border/70 py-0">
-            <CardContent className="px-0 py-0">
-              <div className="divide-y divide-border/65">
-                {experience.map((item) => {
-                  const isOpen = openItemId === item.id;
+          <TerminalWindow title="git log — branch: career" contentClassName="p-0 sm:p-0">
+            <div className="relative">
+              {/* branch line */}
+              <div
+                aria-hidden="true"
+                className="absolute top-0 bottom-0 left-7 w-px bg-border sm:left-9"
+              />
 
-                  return (
-                    <div key={item.id} className="px-6 sm:px-8">
-                      <button
-                        type="button"
-                        onClick={() => toggleItem(item.id)}
-                        className="flex w-full items-center gap-3 py-5 text-left"
-                        aria-expanded={isOpen}
-                        aria-controls={`experience-panel-${item.id}`}
-                      >
-                        <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
-                          <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border/60 bg-background/70">
-                            <DynamicIcon name={item.iconName} className="h-4 w-4 text-primary" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="truncate text-base font-semibold text-foreground sm:text-lg">
-                              {item.role}
-                            </p>
-                            <p className="truncate text-sm text-muted-foreground">{item.company}</p>
-                          </div>
-                        </div>
+              {experience.map((item) => {
+                const isOpen = openItemId === item.id;
+                const hash = commitHash(item.id);
 
-                        <div className="ml-2 flex shrink-0 items-center gap-3">
-                          <span className="rounded-full border border-border/60 bg-background/70 px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                            {item.duration}
-                          </span>
-                          <ChevronDown
-                            className={cn(
-                              'h-4 w-4 text-muted-foreground transition-transform duration-200',
-                              isOpen && 'rotate-180'
-                            )}
-                            aria-hidden="true"
-                          />
-                        </div>
-                      </button>
-
-                      <AnimatePresence initial={false}>
-                        {isOpen && (
-                          <m.div
-                            id={`experience-panel-${item.id}`}
-                            key={`content-${item.id}`}
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: 'auto', opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.35, ease: 'easeOut' }}
-                            className="overflow-hidden"
-                          >
-                            <div className="pb-5">
-                              <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
-                                {item.descriptionPoints.map((point, index) => (
-                                  <li key={index} className="flex gap-2">
-                                    <span className="mt-1.75 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-primary/70" />
-                                    <span>{point}</span>
-                                  </li>
-                                ))}
-                              </ul>
-
-                              {item.skills && item.skills.length > 0 && (
-                                <div className="mt-4 flex flex-wrap gap-1.5">
-                                  {item.skills.map((skill) => (
-                                    <Badge
-                                      key={skill}
-                                      variant="secondary"
-                                      className="rounded-full px-2.5 py-1 text-[11px]"
-                                    >
-                                      {skill}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </m.div>
+                return (
+                  <div key={item.id} className="relative border-b last:border-b-0">
+                    <button
+                      type="button"
+                      onClick={() => toggleItem(item.id)}
+                      className="flex w-full cursor-pointer items-center gap-3 py-5 pr-5 pl-4 text-left transition-colors hover:bg-accent/40 sm:gap-4 sm:pl-6"
+                      aria-expanded={isOpen}
+                      aria-controls={`experience-panel-${item.id}`}
+                    >
+                      {/* commit dot on the branch line */}
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full border-2 bg-card sm:size-7',
+                          isOpen ? 'border-primary' : 'border-border'
                         )}
-                      </AnimatePresence>
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+                      >
+                        <DynamicIcon
+                          name={item.iconName}
+                          className={cn(
+                            'size-3 sm:size-3.5',
+                            isOpen ? 'text-primary' : 'text-muted-foreground'
+                          )}
+                        />
+                      </span>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="flex flex-wrap items-baseline gap-x-2 font-mono text-sm sm:text-base">
+                          <span className="font-bold text-term-amber">{hash}</span>
+                          <span className="font-bold text-foreground">{item.role}</span>
+                          <span className="text-muted-foreground">@ {item.company}</span>
+                        </p>
+                        <p className="mt-0.5 font-mono text-[11px] text-muted-foreground sm:text-xs">
+                          <span className="text-term-green">Date:</span> {item.duration}
+                        </p>
+                      </div>
+
+                      <ChevronDown
+                        className={cn(
+                          'size-4 shrink-0 text-muted-foreground transition-transform duration-200',
+                          isOpen && 'rotate-180'
+                        )}
+                        aria-hidden="true"
+                      />
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <m.div
+                          id={`experience-panel-${item.id}`}
+                          key={`content-${item.id}`}
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pr-5 pb-5 pl-13 sm:pl-17">
+                            <ul className="space-y-2 text-sm leading-relaxed text-muted-foreground">
+                              {item.descriptionPoints.map((point, index) => (
+                                <li key={index} className="flex gap-2.5">
+                                  <span
+                                    aria-hidden="true"
+                                    className="font-mono text-xs font-bold text-primary"
+                                  >
+                                    +
+                                  </span>
+                                  <span>{point}</span>
+                                </li>
+                              ))}
+                            </ul>
+
+                            {item.skills && item.skills.length > 0 && (
+                              <div className="mt-4 flex flex-wrap gap-1.5">
+                                {item.skills.map((skill) => (
+                                  <Badge
+                                    key={skill}
+                                    variant="secondary"
+                                    className="rounded-sm font-mono text-[10px] lowercase"
+                                  >
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </m.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+
+              <p className="cursor-block py-4 pl-4 font-mono text-xs text-muted-foreground sm:pl-6">
+                git checkout --future
+              </p>
+            </div>
+          </TerminalWindow>
         </m.div>
       </div>
     </section>

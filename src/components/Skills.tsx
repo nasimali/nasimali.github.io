@@ -1,7 +1,7 @@
 import DynamicIcon from '@/components/DynamicIcon';
 import SectionIntro from '@/components/SectionIntro';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useConfigData } from '@/contexts/ConfigContext';
 import type { SkillItem } from '@/lib/types';
@@ -22,6 +22,14 @@ const levelPriority: Record<string, number> = {
   Other: 5,
 };
 
+const levelValue: Record<string, number> = {
+  Expert: 96,
+  Advanced: 80,
+  Proficient: 64,
+  Intermediate: 50,
+  Beginner: 34,
+};
+
 const toTabValue = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 const buildTabs = (skills: SkillItem[]): SkillTab[] => {
@@ -40,14 +48,14 @@ const buildTabs = (skills: SkillItem[]): SkillTab[] => {
     })
     .map(([level, levelSkills]) => ({
       value: toTabValue(level),
-      label: `${level} (${levelSkills.length})`,
+      label: `${level.toLowerCase()} (${levelSkills.length})`,
       skills: levelSkills,
     }));
 
   return [
     {
       value: 'all',
-      label: `All (${skills.length})`,
+      label: `--all (${skills.length})`,
       skills,
     },
     ...levelTabs,
@@ -66,19 +74,18 @@ const Skills = () => {
     <section id="skills" className="py-20 md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
-          eyebrow="Stack"
+          eyebrow="ls ~/skills --sort=level"
           heading={skillsSection.heading}
           subheading={skillsSection.subheading}
-          align="center"
         />
 
         <Tabs defaultValue="all" className="space-y-6">
-          <TabsList className="flex h-auto w-full flex-wrap justify-center gap-2 bg-transparent p-0">
+          <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 bg-transparent p-0">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="rounded-full border border-border/70 bg-background/70 px-4 py-2 text-xs font-semibold tracking-wide data-[state=active]:border-primary/40 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                className="grow-0 rounded-md border bg-card px-3.5 py-1.5 font-mono text-xs data-[state=active]:border-primary data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
               >
                 {tab.label}
               </TabsTrigger>
@@ -88,40 +95,51 @@ const Skills = () => {
           {tabs.map((tab) => (
             <TabsContent key={tab.value} value={tab.value}>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {tab.skills.map((skill, index) => (
-                  <m.div
-                    key={skill.id}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.15 }}
-                    transition={{ duration: 0.5, delay: index * 0.04, ease: 'easeOut' }}
-                    className="h-full"
-                  >
-                    <Card className="glass-panel h-full border-border/70 py-0 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-xl">
-                      <CardHeader className="flex flex-row items-center gap-4 border-b border-border/60 pb-4 pt-5">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-border/70 bg-background/70">
-                          <DynamicIcon
-                            name={skill.iconName}
-                            className={`h-6 w-6 ${skill.iconColor}`}
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-lg leading-tight tracking-tight">
+                {tab.skills.map((skill, index) => {
+                  const level = skill.level ?? 'Other';
+                  const value = levelValue[level] ?? 55;
+
+                  return (
+                    <m.div
+                      key={skill.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.15 }}
+                      transition={{ duration: 0.45, delay: index * 0.03, ease: 'easeOut' }}
+                      className="h-full"
+                    >
+                      <div className="retro-card flex h-full flex-col gap-4 p-5">
+                        <div className="flex items-center gap-3.5">
+                          <div className="flex size-10 shrink-0 items-center justify-center rounded-md border bg-secondary/60">
+                            <DynamicIcon
+                              name={skill.iconName}
+                              className={`size-5 ${skill.iconColor}`}
+                            />
+                          </div>
+                          <p className="font-mono text-sm leading-snug font-bold text-foreground">
                             {skill.name}
-                          </CardTitle>
+                          </p>
+                          <Badge
+                            variant="outline"
+                            className="ml-auto shrink-0 rounded-sm font-mono text-[10px] lowercase"
+                          >
+                            {level}
+                          </Badge>
                         </div>
-                      </CardHeader>
-                      <CardContent className="pt-4 pb-5">
-                        <Badge
-                          variant="secondary"
-                          className="rounded-full px-2.5 py-1 text-xs font-medium"
-                        >
-                          {skill.level ?? 'Core Skill'}
-                        </Badge>
-                      </CardContent>
-                    </Card>
-                  </m.div>
-                ))}
+                        <div className="mt-auto flex items-center gap-3">
+                          <Progress
+                            value={value}
+                            aria-label={`${skill.name} proficiency: ${level}`}
+                            className="h-1.5 rounded-sm"
+                          />
+                          <span className="shrink-0 font-mono text-[10px] font-bold text-muted-foreground">
+                            {value}%
+                          </span>
+                        </div>
+                      </div>
+                    </m.div>
+                  );
+                })}
               </div>
             </TabsContent>
           ))}

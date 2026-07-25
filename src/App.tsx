@@ -1,13 +1,15 @@
+import CommandPalette from '@/components/CommandPalette';
 import ConsentBanner from '@/components/ConsentBanner';
 import Footer from '@/components/Footer';
 import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
 import { ConfigProvider, useConfigContext } from '@/contexts/ConfigContext';
+import type { ConfigData } from '@/lib/fetchConfig';
 import { useActiveSection } from '@/hooks/use-active-section';
 import { useTheme } from '@/hooks/use-theme';
 import { getConsentCookie, setConsentCookie } from '@/lib/cookieConsentManager';
 import { domAnimation, LazyMotion } from 'framer-motion';
-import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 const About = lazy(() => import('@/components/About'));
 const Skills = lazy(() => import('@/components/Skills'));
@@ -20,7 +22,29 @@ const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID as string | undefined
 
 const SectionLoader = () => (
   <div className="flex h-48 w-full items-center justify-center">
-    <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground border-t-primary" />
+    <p className="cursor-block font-mono text-sm text-muted-foreground">loading module</p>
+  </div>
+);
+
+const BootScreen = () => (
+  <div className="relative flex min-h-screen items-center justify-center overflow-x-hidden bg-background text-foreground">
+    <div className="w-full max-w-md space-y-2 px-6 font-mono text-sm">
+      <p className="text-term-green">[ ok ] reticulating splines...</p>
+      <p className="text-term-green">[ ok ] mounting ~/portfolio...</p>
+      <p className="cursor-block text-muted-foreground">[ .. ] fetching site config</p>
+    </div>
+  </div>
+);
+
+const ErrorScreen = ({ message }: { message?: string }) => (
+  <div className="relative flex min-h-screen items-center justify-center overflow-x-hidden bg-background text-foreground">
+    <div className="w-full max-w-lg space-y-3 px-6 font-mono text-sm">
+      <p className="font-bold text-term-red">kernel panic — portfolio not synced</p>
+      <p className="text-muted-foreground">
+        {message || 'An unexpected error occurred while loading the portfolio data.'}
+      </p>
+      <p className="cursor-block text-muted-foreground">try refreshing the page</p>
+    </div>
   </div>
 );
 
@@ -28,33 +52,21 @@ const AppContent = () => {
   const { config, isLoading, error } = useConfigContext();
 
   if (isLoading) {
-    return (
-      <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground flex items-center justify-center">
-        <div className="space-y-3 text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-muted-foreground border-t-primary" />
-          <p className="text-sm text-muted-foreground">Loading your portfolio...</p>
-        </div>
-      </div>
-    );
+    return <BootScreen />;
   }
 
   if (error) {
-    return (
-      <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground flex items-center justify-center">
-        <div className="space-y-3 text-center max-w-md">
-          <h1 className="text-lg font-semibold text-foreground">Unable to load portfolio</h1>
-          <p className="text-sm text-muted-foreground">
-            {error.message || 'An unexpected error occurred while loading your portfolio data.'}
-          </p>
-        </div>
-      </div>
-    );
+    return <ErrorScreen message={error.message} />;
   }
 
   if (!config) {
     return <div />;
   }
 
+  return <PortfolioApp config={config} />;
+};
+
+const PortfolioApp = ({ config }: { config: ConfigData }) => {
   const {
     textContent: { metaDescription, navLinks, siteName, siteTitleFull },
   } = config;
@@ -67,6 +79,7 @@ const AppContent = () => {
 
   const { activeSection, setActiveSection } = useActiveSection(sectionIds);
   const { isDark, toggleTheme } = useTheme();
+  const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
   const isAnalyticsInitialized = useRef(false);
   const reactGAModulePromise = useRef<Promise<typeof import('react-ga4')> | null>(null);
@@ -128,11 +141,22 @@ const AppContent = () => {
   return (
     <LazyMotion features={domAnimation} strict>
       <div className="relative min-h-screen overflow-x-hidden bg-background text-foreground">
-        <div className="page-noise" />
+        <div className="page-grid" />
+        <div className="crt-overlay" aria-hidden="true" />
+
         <Navbar
           isDark={isDark}
           toggleTheme={toggleTheme}
           activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          onOpenPalette={() => setIsPaletteOpen(true)}
+        />
+
+        <CommandPalette
+          open={isPaletteOpen}
+          setOpen={setIsPaletteOpen}
+          isDark={isDark}
+          toggleTheme={toggleTheme}
           setActiveSection={setActiveSection}
         />
 
