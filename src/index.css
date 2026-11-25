@@ -85,81 +85,81 @@
 }
 
 :root {
-  /* paper mode — warm cream, ink, terracotta */
-  --background: 48 33% 97%;
-  --foreground: 45 8% 12%;
+  /* arctic mode — cool white, ink navy, electric cobalt */
+  --background: 220 33% 98%;
+  --foreground: 222 47% 11%;
 
-  --card: 46 42% 99%;
-  --card-foreground: 45 8% 12%;
+  --card: 220 30% 100%;
+  --card-foreground: 222 47% 11%;
 
-  --popover: 46 42% 99%;
-  --popover-foreground: 45 8% 12%;
+  --popover: 220 30% 100%;
+  --popover-foreground: 222 47% 11%;
 
-  --primary: 15 62% 45%;
-  --primary-foreground: 48 40% 98%;
+  --primary: 225 78% 52%;
+  --primary-foreground: 210 40% 98%;
 
-  --secondary: 45 28% 91%;
-  --secondary-foreground: 45 8% 16%;
+  --secondary: 218 24% 92%;
+  --secondary-foreground: 222 47% 14%;
 
-  --muted: 45 24% 91%;
-  --muted-foreground: 45 6% 38%;
+  --muted: 218 28% 94%;
+  --muted-foreground: 217 18% 43%;
 
-  --accent: 45 30% 88%;
-  --accent-foreground: 45 8% 16%;
+  --accent: 214 32% 90%;
+  --accent-foreground: 222 47% 14%;
 
-  --destructive: 0 68% 48%;
-  --destructive-foreground: 48 40% 98%;
+  --destructive: 350 72% 48%;
+  --destructive-foreground: 210 40% 98%;
 
-  --border: 45 14% 80%;
-  --input: 45 14% 80%;
-  --ring: 15 62% 45%;
+  --border: 217 22% 84%;
+  --input: 217 22% 84%;
+  --ring: 225 78% 52%;
 
-  --term-green: 145 55% 28%;
-  --term-amber: 38 85% 36%;
-  --term-red: 0 65% 45%;
-  --term-blue: 212 60% 40%;
-  --term-purple: 268 40% 46%;
+  --term-green: 158 72% 35%;
+  --term-amber: 34 92% 48%;
+  --term-red: 350 72% 52%;
+  --term-blue: 202 91% 42%;
+  --term-purple: 258 72% 58%;
 
-  --shadow-hard: 45 14% 74%;
+  --shadow-hard: 217 24% 80%;
 }
 
 .dark {
-  /* charcoal mode — warm dark, cream ink, glowing terracotta */
-  --background: 48 11% 9%;
-  --foreground: 48 25% 92%;
+  /* midnight mode — deep navy, steel blue, cyan-cobalt accent */
+  --background: 224 42% 8%;
+  --foreground: 210 28% 94%;
 
-  --card: 48 9% 13%;
-  --card-foreground: 48 25% 92%;
+  --card: 224 34% 12%;
+  --card-foreground: 210 28% 94%;
 
-  --popover: 48 10% 11%;
-  --popover-foreground: 48 25% 92%;
+  --popover: 224 38% 10%;
+  --popover-foreground: 210 28% 94%;
 
-  --primary: 15 63% 60%;
-  --primary-foreground: 48 11% 9%;
+  --primary: 221 92% 68%;
+  --primary-foreground: 224 42% 8%;
 
-  --secondary: 48 8% 18%;
-  --secondary-foreground: 48 25% 92%;
+  --secondary: 223 28% 17%;
+  --secondary-foreground: 210 28% 94%;
 
-  --muted: 48 8% 17%;
-  --muted-foreground: 45 10% 64%;
+  --muted: 223 27% 16%;
+  --muted-foreground: 214 16% 68%;
 
-  --accent: 48 8% 21%;
-  --accent-foreground: 48 25% 92%;
+  --accent: 223 30% 21%;
+  --accent-foreground: 210 28% 94%;
 
-  --destructive: 0 66% 58%;
-  --destructive-foreground: 48 11% 9%;
+  --destructive: 350 78% 66%;
+  --destructive-foreground: 224 42% 8%;
 
-  --border: 45 8% 25%;
-  --input: 45 8% 25%;
-  --ring: 15 63% 60%;
+  --border: 222 22% 24%;
+  --input: 222 22% 24%;
+  --ring: 221 92% 68%;
 
-  --term-green: 140 38% 62%;
-  --term-amber: 43 84% 62%;
-  --term-red: 0 72% 66%;
-  --term-blue: 212 70% 70%;
-  --term-purple: 268 55% 75%;
+  --term-green: 158 64% 64%;
+  --term-amber: 38 94% 68%;
+  --term-red: 350 82% 70%;
+  --term-blue: 198 88% 68%;
+  --term-purple: 258 82% 76%;
 
-  --shadow-hard: 48 11% 5%;
+  --shadow-hard: 224 48% 4%;
 }
 
 @layer base {
@@ -206,7 +206,7 @@
 }
 
 @layer components {
-  /* fixed page backdrop: graph-paper grid + warm glow */
+  /* fixed page backdrop: cool grid + cobalt glow */
   .page-grid {
     position: fixed;
     inset: 0;
@@ -241,7 +241,7 @@
       transparent 0,
       transparent 2px,
       hsl(var(--foreground) / 0.016) 2px,
-      hsl(var(--foreground) / 0.016) 3px
+      hsl(var(--foreground) / 0.012) 3px
     );
   }
 

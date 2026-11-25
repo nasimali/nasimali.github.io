@@ -56,7 +56,7 @@ const Projects = () => {
                       decoding="async"
                       onError={(event) => {
                         event.currentTarget.src =
-                          'https://placehold.co/900x600/1a1915/f0eee6?text=Preview+Unavailable';
+                          'https://placehold.co/900x600/111827/e5edff?text=Preview+Unavailable';
                       }}
                     />
                   </div>
